@@ -1,0 +1,134 @@
+---
+title: "The Brain & Mind Centre"
+subtitle: "Day 3"
+author: "Sydney Informatics Hub"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+    theme: lumen
+    hightlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = FALSE)
+```
+
+## Introduction
+
+Hello this is day 3
+
+### Installation & Setup
+
+blah
+
+```{r installation, eval=FALSE, message=FALSE}
+LoadPackages <- function(x){ for( i in x ){ if( ! require( i , character.only = TRUE ) ){
+  install.packages( i , dependencies = TRUE , repos = "http://cran.us.r-project.org")
+  require( i , character.only = TRUE )}}}
+
+#  Then try/install packages...
+LoadPackages(c("tidyverse",
+               "xlsx",
+               "ggplot2",
+               "foreign",
+               "dplyr"))
+
+#options(max.print = 100)
+
+options(scipen = 999)
+set.seed(5)
+```
+
+## About R
+
+### The R Programming Language
+
+[R](https://www.r-project.org/) is an open source programming language and software environment for statistical computing and graphics that is supported by the R Foundation for Statistical Computing. Today, it is one of the most popular languages, being used all across the world in a wide variety of domains and fields.
+
+### RStudio
+
+[RStudio](https://www.rstudio.com/) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management.
+
+## Getting Started
+
+### Calculating things in R
+
+Standard math functions work in R:
+```{r}
+2+3
+
+1e5-5e4
+
+1/1000
+
+sqrt(2)
+
+2*pi
+```
+
+Let's use vectors:
+
+```{r}
+1:10
+
+2*(1:10)
+
+2^(1:10)
+```
+
+We can store values:
+
+```{r}
+x<-3
+x=3
+3->x
+x
+x^2
+```
+
+### Vectors
+
+We can store vectors:
+
+```{r}
+x<-1:10
+x
+2^x
+
+y<-c(3,4,5)
+y^2
+
+some.fruits<-c("apple","orange","banana")
+some.fruits
+```
+
+### Working with Simple Data
+
+A lot of the time in R we are working with tables of data, know as "data frames". 
+
+Commonly, 
+
+**rows** may represent instances e.g. *data points*, *people*, *events*, etc. while 
+
+**columns** will represent different types of data associated with each data point or instance e.g. *Name*, *ID*, *location*, *time*, *value*...
+
+Here is an example data frame
+
+```{r}
+simple.data<-data.frame(first.name=c("Alice",
+                                     "Bob",
+                                     "Cathy",
+                                     "Daniel"),
+                        gender=as.factor(c("Female",
+                                           "Male",
+                                           "Female",
+                                           "Male")),
+                        favourite.number=c(4,23,pi,exp(1)),
+                        favourite.letter=c("a","c","x","q"),
+                        favourite.weekday=c("Monday","Thursday","Sunday","Friday"),
+                        stringsAsFactors = FALSE)
+```
+
