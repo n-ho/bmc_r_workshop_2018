@@ -12,7 +12,7 @@ humantime: "2:00 pm - 5:00 pm" # human-readable times for the workshop (e.g., "9
 startdate: 2018-11-12 # machine-readable start date for the workshop in YYYY-MM-DD format like 2015-01-01
 enddate: 2018-11-26 # machine-readable end date for the workshop in YYYY-MM-DD format like 2015-01-02
 instructor: ["Gordon McDonald, Darya Vanichkina, Madhura Killedar, Nicholas Ho"] # boxed, comma-separated list of instructors' names as strings, like ["Kay McNulty", "Betty Jennings", "Betty Snyder"]
-helper: 'false' # boxed, comma-separated list of helpers' names, like ["Marlyn Wescoff", "Fran Bilas", "Ruth Lichterman"]
+#helper: ["someone"] # boxed, comma-separated list of helpers' names, like ["Marlyn Wescoff", "Fran Bilas", "Ruth Lichterman"]
 contact: ["nicholas.ho@sydney.edu.au"] # boxed, comma-separated list of contact email addresses for the host, lead instructor, or whoever else is handling questions, like ["marlyn.wescoff@example.org", "fran.bilas@example.org", "ruth.lichterman@example.org"]
 collaborative_notes:             # optional: URL for the workshop collaborative notes, e.g. an Etherpad or Google Docs document
 eventbrite: 50385247632 # optional: alphanumeric key for Eventbrite registration, e.g., "1234567890AB" (if Eventbrite is being used)
@@ -248,13 +248,10 @@ make part of the course this won't impact your learning.</p>
   {% elsif page.carpentry == "lc" %}
   Library Carpentry
   {% endif %}
-  workshop,
-  you will need access to the software described below.
-  In addition, you will need an up-to-date web browser.
+  workshop,  you will need access to the software described below. In addition, you will need an up-to-date web browser.
 </p>
 <p>
-  We maintain a list of common issues that occur during installation as a reference for instructors
-  that may be useful on the
+  We maintain a list of common issues that occur during installation as a reference for instructors  that may be useful on the
   <a href = "{{site.swc_github}}/workshop-template/wiki/Configuration-Problems-and-Solutions">Configuration Problems and Solutions wiki page</a>.
 </p>
 
@@ -262,10 +259,8 @@ make part of the course this won't impact your learning.</p>
   <h3>R</h3>
 
   <p>
-    <a href="http://www.r-project.org">R</a> is a programming language
-    that is especially powerful for data exploration, visualization, and
-    statistical analysis. To interact with R, we use
-    <a href="http://www.rstudio.com/">RStudio</a>.
+    <a href="http://www.r-project.org">R</a> is a programming language that is especially powerful for data exploration, visualization, and
+    statistical analysis. To interact with R, we use <a href="http://www.rstudio.com/">RStudio</a>.
   </p>
 
   <div class="row">
