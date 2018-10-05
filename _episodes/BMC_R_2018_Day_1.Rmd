@@ -1,5 +1,5 @@
 ---
-title: "The Brain & Mind Centre - Introduction into R Workshop"
+title: "Brain & Mind Centre - Introduction into R Workshop"
 subtitle: "Day 1"
 author: "Gordon McDonald, Madhura Killedar, Nicholas Ho and Darya Vanichkina"
 output:
