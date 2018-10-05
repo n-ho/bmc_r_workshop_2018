@@ -376,66 +376,80 @@ summary(autism.data)
 
 
 ### Changing The Column Names
-```{r changeNames}
+We've a typo in the country of residence column. Let's correct this.
+```{r}
 colnames(autism.data)
 
-colnames(autism.data)[1] <- ""
+which(colnames(autism.data) == "contry_of_res")
 
-names(autism.data)[7] <- "Player.Money.Lost"
+colnames(autism.data)[17] <- "country"
 ```
 
-Afterwards, view the data again to check the column names have been changed.
-
+Afterwards, view the data again to check the column names have been changed 
 ```{r eval=FALSE}
 View(autism.data)
 ```
 
-### Add a new Date column
-Time to add in a column which has the date as a date-time object instead of as a character string. We will need to use several functions to do this. 
+### Add a new column
+Let's create a better participant ID than just 1,2,3,...
 
-The first function we will need is `paste0()`. This function concatenates strings. For example;
+The first function we will need is `paste()`. This function concatenates strings. For example;
 ```{r}
-paste0("Wo","rd")
+paste("hel", "lo")
 ```
 
-The second function we will need is `strptime()`
 
-Use the help function to find out what it does: `?strptime`
-
-Now let's convert the character string which we have describing the month and year of each row of data, into a date-time object so that it will be ordered appropriately etc.
-
+This leaves an unwanted gap, hence we'll use the `sep` parameter
 ```{r}
-#Add a day of month (1st) to each date string
-date.string <- paste0( "1 " , autism.data$Month.Year )
-
-#Convert to POSIXlt, a date-time format
-strptime( date.string , format = "%d %B %Y" ) -> autism.data$Date
+paste("hel", "lo", sep = "")
 ```
 
-Afterwards, view the data again to check the new "Date" column.
+Now let's add the letter "P" to the front of the IDS. Then, we'll add this as a new column
+```{r}
+new_ids <- paste( "P" , autism.data$id, sep = "")
 
+autism.data$pids <- new_ids 
+```
+
+Afterwards, view the data again to check the new "pids" column.
 ```{r eval=FALSE}
 View(autism.data)
 ```
+
+
 
 ### Accessing Subsets
-Let's look at all the records for Brisbane:
+Let's look at all the records for those with a family history of autism:
 ```{r}
-brisbane.only<-autism.data[autism.data$Local.Govt.Area=="BRISBANE",]
+family.autism.data <- autism.data[autism.data$autism == "yes",]
 ```
 
-What is the average amount of money lost by players in any given month in Brisbane?
+What is the average AQ-10 score for those with a familial history of autism?
 ```{r}
-mean(brisbane.only$Player.Money.Lost)
-```
-That's a lot of money!
-
-What is the largest amount of money lost by players in any given month in Brisbane?
-```{r}
-max(brisbane.only$Player.Money.Lost)
+mean(family.autism.data$result)
 ```
 
-What month was this?
+What about for those with no familial history of autism?
+```{r}
+no.family.autism.data <- autism.data[autism.data$autism == "no",]
+mean(no.family.autism.data$result)
+```
+
+Who is the oldest person in the dataset and what is their age?
+```{r}
+max(autism.data$age)
+
+# ignore missing data
+max(autism.data$age, na.rm = TRUE)
+which.max(autism.data$age)
+```
+
+Someone is apparently 383 years old! Let's remove this person
+```{r}
+autism.data <- autism.data[-which.max(autism.data$age), ]
+```
+
+
 ```{r}
 brisbane.only$Month.Year[which.max(brisbane.only$Player.Money.Lost)]
 ```
