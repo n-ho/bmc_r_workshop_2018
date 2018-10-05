@@ -1,7 +1,7 @@
 ---
-title: "The Brain & Mind Centre"
+title: "The Brain & Mind Centre - Introduction into R Workshop"
 subtitle: "Day 1"
-author: "Sydney Informatics Hub"
+author: "Gordon McDonald, Madhura Killedar, Nicholas Ho and Darya Vanichkina"
 output:
   html_document:
     toc: true
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ## Introduction
 
-Welcome to the home page for the Brain & Mind Centre R course. It is a three day course covering six seperate topics that occur frequently to anyone doing pragmatic data analysis. The content is structured in such a way that the material in a section is independent to the other sections, so if you can only make part of the course this won't impact your learning.
+Welcome to the home page for the Brain & Mind Centre Introduction into R workshop. It is a three day course covering six seperate topics that occur frequently to anyone doing pragmatic data analysis. The content is structured in such a way that the material in a section is independent to the other sections, so if you can only make part of the course this won't impact your learning.
 
 These courses are designed to be informal and free flowing, so whilst there is some material we have prepared, if you have a question then at anytime please let us know and we will be more than happy to assist. If there is anything that we can't answer on the day, we will note it down and make sure that we get back to you with a thorough solution.
 
@@ -36,6 +36,16 @@ These courses are designed to be informal and free flowing, so whilst there is s
 
 ### Installation & Setup
 
+First let's set up the Rstudio panes so that everyone is on the same page.
+
+*Tools* -> *Global Options* -> *Pane Layout*
+
+**Top left:** Console
+**Top right:** Source 
+**Bottom left:** Files, Plots, etc
+**Bottom right:** Environment, History, etc
+
+
 Below is a script that installs packages that you will need for the next three days and also sets some options which will make the course run smoothly. We will explain what the script does as we get further into the material, but for the meantime we would ask that you copy the script and run it in your environment.
 
 ```{r installation, eval=FALSE, message=FALSE}
@@ -50,11 +60,24 @@ LoadPackages(c("tidyverse",
                "foreign",
                "dplyr"))
 
-#options(max.print = 100)
-
 options(scipen = 999)
-set.seed(5)
+set.seed(2018)
 ```
+
+
+## R variable types
+
+Firstly, we introduce the 5 variables types and 4 data types that you'll be dealing with most frequently in R. 
+
+### Variable types
+**integer** variables are whole numbers e.g. 1, 100, -9
+**numeric** variables are decimals e.g. 0.1, 0.99, -0.05
+**character** variables are text e.g. "a", "hello", "welcome"
+**logical** variables are booleans i.e. TRUE or FALSE
+**factor** variables are categorical e.g. "green", "blue", "red", "purple"
+
+## Data types
+**vectors** are 1D collection of variables of the same type
 
 
 
@@ -66,92 +89,92 @@ Standard math functions work in R:
 ```{r}
 2+3
 
-1e5-5e4
-
 1/1000
 
 sqrt(2)
-
-2*pi
 ```
 
-Let's use vectors:
+We can store values in variables:
 
 ```{r}
-1:10
-
-2*(1:10)
-
-2^(1:10)
-```
-
-We can store values:
-
-```{r}
-x<-3
-x=3
-3->x
+x <- 3
+x = 3
+3 -> x
 x
 x^2
 ```
 
 ### Vectors
 
-We can store vectors:
+We can store data in 1D structures called "vectors":
 
 ```{r}
-x<-1:10
+1:10
+
+2*(1:10)
+
+seq(0, 10, 2)
+```
+
+We can store vectors and perform operations on them:
+
+```{r}
+x <- 1:10
 x
 2^x
 
-y<-c(3,4,5)
+y <- c(3,4,5)
 y^2
 
-some.fruits<-c("apple","orange","banana")
-some.fruits
+disorders <- c("autism","ocd ","depression")
+disorders
 ```
 
-### Working with Simple Data
+### Data frames
 
 A lot of the time in R we are working with tables of data, know as "data frames". 
 
 Commonly, 
 
-**rows** may represent instances e.g. *data points*, *people*, *events*, etc. while 
+**rows** may represent instances e.g. *data points*, *patients*, *events*, *samples*, etc. while 
 
 **columns** will represent different types of data associated with each data point or instance e.g. *Name*, *ID*, *location*, *time*, *value*...
 
 Here is an example data frame
 
 ```{r}
-simple.data<-data.frame(first.name=c("Alice",
-                                     "Bob",
-                                     "Cathy",
-                                     "Daniel"),
-                        gender=as.factor(c("Female",
-                                           "Male",
-                                           "Female",
-                                           "Male")),
-                        favourite.number=c(4,23,pi,exp(1)),
-                        favourite.letter=c("a","c","x","q"),
-                        favourite.weekday=c("Monday","Thursday","Sunday","Friday"),
-                        stringsAsFactors = FALSE)
+bmc.data <- data.frame(fname = c("Alice", "Bob", "Carol", "David"),
+                       gender = as.factor(c("Female", "Male", "Female", "Male")),
+                       disorder = c("autism", "anxiety", "autism", "depression"),
+                       age = c(20, 45, 15, 12),
+                       biomarker1 = c(5, 4, 1, 10),
+                       clinicalstage = c("1b", "1a", "1a", "2"),
+                       stringsAsFactors = FALSE)
 ```
 
 ### Viewing The Data
-Use the function `View()` to visually look at the data
+Use the function `View()` to visually inspect the data in a new RStudio pane
 
 ```{r eval=FALSE}
-View(simple.data)
+View(bmc.data)
 ```
 
-How many rows do we have?
+How many rows and columns do we have?
 ```{r}
-nrow(simple.data)
+nrow(bmc.data)
+ncol(bmc.data)
+dim(bmc.data)
 ```
-How many columns do we have?
+
+
+Preview the first N rows of your data frame
 ```{r}
-ncol(simple.data)
+head(bmc.data)
+```
+
+The default for the head() function is to show for the first 
+head()
+
 ```
 
 
