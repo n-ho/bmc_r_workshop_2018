@@ -12,3 +12,6 @@ https://github.com/ctds-usyd/BMC_r_2017/tree/2d0ebeb647bbb4ac54974f50c10afd3a11b
 
 ## Bitly link to github.io page for this workshop
 http://bit.ly/bmc_r_workshop_2018
+
+## Full URL
+https://n-ho.github.io/bmc_r_workshop_2018/
