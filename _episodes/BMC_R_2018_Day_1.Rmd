@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE,
                       cache = FALSE)
 ```
 
+[Back to homepage](https://pages.github.sydney.edu.au/niho7662/bmc_r_2018/)
+
 ## Introduction
 
 Welcome to the home page for the Brain & Mind Centre Introduction into R workshop. It is a three day course covering six seperate topics that occur frequently to anyone doing pragmatic data analysis. The content is structured in such a way that the material in a section is independent to the other sections, so if you can only make part of the course this won't impact your learning.

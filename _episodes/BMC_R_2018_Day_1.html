@@ -227,6 +227,7 @@ div.tocify {
 </div>
 
 
+<p><a href="https://pages.github.sydney.edu.au/niho7662/bmc_r_2018/">Back to homepage</a></p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Welcome to the home page for the Brain &amp; Mind Centre Introduction into R workshop. It is a three day course covering six seperate topics that occur frequently to anyone doing pragmatic data analysis. The content is structured in such a way that the material in a section is independent to the other sections, so if you can only make part of the course this won’t impact your learning.</p>
@@ -716,58 +717,54 @@ strptime( date.string , format = &quot;%d %B %Y&quot; ) -&gt; gambling.data$Date
 
 #look at each row's Local Government Area (LGA)
 random.fifty.rows$Local.Govt.Area</code></pre>
-<pre><code>##  [1] &quot;BANANA&quot;            &quot;RICHMOND&quot;          &quot;BANANA&quot;           
-##  [4] &quot;BRISBANE&quot;          &quot;MOUNT ISA&quot;         &quot;LONGREACH&quot;        
-##  [7] &quot;BRISBANE&quot;          &quot;ISAAC&quot;             &quot;TOOWOOMBA&quot;        
-## [10] &quot;GOLD COAST&quot;        &quot;WINTON&quot;            &quot;SUNSHINE COAST&quot;   
-## [13] &quot;MACKAY&quot;            &quot;ROCKHAMPTON&quot;       &quot;CAIRNS&quot;           
-## [16] &quot;TABLELANDS&quot;        &quot;QUILPIE&quot;           &quot;NORTH BURNETT&quot;    
-## [19] &quot;DOUGLAS&quot;           &quot;WHITSUNDAY&quot;        &quot;MACKAY&quot;           
-## [22] &quot;FLINDERS&quot;          &quot;SUNSHINE COAST&quot;    &quot;MAREEBA&quot;          
-## [25] &quot;MCKINLAY&quot;          &quot;MACKAY&quot;            &quot;LOCKYER VALLEY&quot;   
-## [28] &quot;IPSWICH&quot;           &quot;COOK&quot;              &quot;IPSWICH&quot;          
-## [31] &quot;WINTON&quot;            &quot;SUNSHINE COAST&quot;    &quot;MACKAY&quot;           
-## [34] &quot;BUNDABERG&quot;         &quot;MURWEH&quot;            &quot;BUNDABERG&quot;        
-## [37] &quot;GYMPIE&quot;            &quot;FLINDERS&quot;          &quot;MAREEBA&quot;          
-## [40] &quot;WINTON&quot;            &quot;GOLD COAST&quot;        &quot;NORTH BURNETT&quot;    
-## [43] &quot;LIVINGSTONE&quot;       &quot;BLACKALL TAMBO&quot;    &quot;CASSOWARY COAST&quot;  
-## [46] &quot;HINCHINBROOK&quot;      &quot;TOOWOOMBA&quot;         &quot;SCENIC RIM&quot;       
-## [49] &quot;CLONCURRY&quot;         &quot;CENTRAL HIGHLANDS&quot;</code></pre>
+<pre><code>##  [1] &quot;ROCKHAMPTON&quot;       &quot;BANANA&quot;            &quot;WEIPA&quot;            
+##  [4] &quot;WEIPA&quot;             &quot;BARCALDINE&quot;        &quot;TORRES&quot;           
+##  [7] &quot;TABLELANDS&quot;        &quot;SOUTH BURNETT&quot;     &quot;CAIRNS&quot;           
+## [10] &quot;GYMPIE&quot;            &quot;LIVINGSTONE&quot;       &quot;NORTH BURNETT&quot;    
+## [13] &quot;SOUTH BURNETT&quot;     &quot;COOK&quot;              &quot;ROCKHAMPTON&quot;      
+## [16] &quot;GOLD COAST&quot;        &quot;TOOWOOMBA&quot;         &quot;SOUTHERN DOWNS&quot;   
+## [19] &quot;SUNSHINE COAST&quot;    &quot;MURWEH&quot;            &quot;NORTH BURNETT&quot;    
+## [22] &quot;WHITSUNDAY&quot;        &quot;SUNSHINE COAST&quot;    &quot;MAREEBA&quot;          
+## [25] &quot;LIVINGSTONE&quot;       &quot;TOOWOOMBA&quot;         &quot;GOLD COAST&quot;       
+## [28] &quot;NOOSA&quot;             &quot;FRASER COAST&quot;      &quot;BUNDABERG&quot;        
+## [31] &quot;GOLD COAST&quot;        &quot;TORRES&quot;            &quot;CARPENTARIA&quot;      
+## [34] &quot;SOUTH BURNETT&quot;     &quot;WINTON&quot;            &quot;CENTRAL HIGHLANDS&quot;
+## [37] &quot;SOUTH BURNETT&quot;     &quot;MCKINLAY&quot;          &quot;BLACKALL TAMBO&quot;   
+## [40] &quot;CAIRNS&quot;            &quot;NOOSA&quot;             &quot;REDLAND&quot;          
+## [43] &quot;BARCALDINE&quot;        &quot;REDLAND&quot;           &quot;NORTH BURNETT&quot;    
+## [46] &quot;CARPENTARIA&quot;       &quot;CENTRAL HIGHLANDS&quot; &quot;BUNDABERG&quot;        
+## [49] &quot;GLADSTONE&quot;         &quot;MURWEH&quot;</code></pre>
 <pre class="r"><code>#look at the unique local government areas (duplicates removed)
 unique(random.fifty.rows$Local.Govt.Area)</code></pre>
-<pre><code>##  [1] &quot;BANANA&quot;            &quot;RICHMOND&quot;          &quot;BRISBANE&quot;         
-##  [4] &quot;MOUNT ISA&quot;         &quot;LONGREACH&quot;         &quot;ISAAC&quot;            
-##  [7] &quot;TOOWOOMBA&quot;         &quot;GOLD COAST&quot;        &quot;WINTON&quot;           
-## [10] &quot;SUNSHINE COAST&quot;    &quot;MACKAY&quot;            &quot;ROCKHAMPTON&quot;      
-## [13] &quot;CAIRNS&quot;            &quot;TABLELANDS&quot;        &quot;QUILPIE&quot;          
-## [16] &quot;NORTH BURNETT&quot;     &quot;DOUGLAS&quot;           &quot;WHITSUNDAY&quot;       
-## [19] &quot;FLINDERS&quot;          &quot;MAREEBA&quot;           &quot;MCKINLAY&quot;         
-## [22] &quot;LOCKYER VALLEY&quot;    &quot;IPSWICH&quot;           &quot;COOK&quot;             
-## [25] &quot;BUNDABERG&quot;         &quot;MURWEH&quot;            &quot;GYMPIE&quot;           
-## [28] &quot;LIVINGSTONE&quot;       &quot;BLACKALL TAMBO&quot;    &quot;CASSOWARY COAST&quot;  
-## [31] &quot;HINCHINBROOK&quot;      &quot;SCENIC RIM&quot;        &quot;CLONCURRY&quot;        
-## [34] &quot;CENTRAL HIGHLANDS&quot;</code></pre>
+<pre><code>##  [1] &quot;ROCKHAMPTON&quot;       &quot;BANANA&quot;            &quot;WEIPA&quot;            
+##  [4] &quot;BARCALDINE&quot;        &quot;TORRES&quot;            &quot;TABLELANDS&quot;       
+##  [7] &quot;SOUTH BURNETT&quot;     &quot;CAIRNS&quot;            &quot;GYMPIE&quot;           
+## [10] &quot;LIVINGSTONE&quot;       &quot;NORTH BURNETT&quot;     &quot;COOK&quot;             
+## [13] &quot;GOLD COAST&quot;        &quot;TOOWOOMBA&quot;         &quot;SOUTHERN DOWNS&quot;   
+## [16] &quot;SUNSHINE COAST&quot;    &quot;MURWEH&quot;            &quot;WHITSUNDAY&quot;       
+## [19] &quot;MAREEBA&quot;           &quot;NOOSA&quot;             &quot;FRASER COAST&quot;     
+## [22] &quot;BUNDABERG&quot;         &quot;CARPENTARIA&quot;       &quot;WINTON&quot;           
+## [25] &quot;CENTRAL HIGHLANDS&quot; &quot;MCKINLAY&quot;          &quot;BLACKALL TAMBO&quot;   
+## [28] &quot;REDLAND&quot;           &quot;GLADSTONE&quot;</code></pre>
 <pre class="r"><code>#look at how many rows there are for each LGA
 table(random.fifty.rows$Local.Govt.Area)</code></pre>
 <pre><code>## 
-##            BANANA    BLACKALL TAMBO          BRISBANE         BUNDABERG 
-##                 2                 1                 2                 2 
-##            CAIRNS   CASSOWARY COAST CENTRAL HIGHLANDS         CLONCURRY 
-##                 1                 1                 1                 1 
-##              COOK           DOUGLAS          FLINDERS        GOLD COAST 
-##                 1                 1                 2                 2 
-##            GYMPIE      HINCHINBROOK           IPSWICH             ISAAC 
-##                 1                 1                 2                 1 
-##       LIVINGSTONE    LOCKYER VALLEY         LONGREACH            MACKAY 
-##                 1                 1                 1                 4 
-##           MAREEBA          MCKINLAY         MOUNT ISA            MURWEH 
-##                 2                 1                 1                 1 
-##     NORTH BURNETT           QUILPIE          RICHMOND       ROCKHAMPTON 
-##                 2                 1                 1                 1 
-##        SCENIC RIM    SUNSHINE COAST        TABLELANDS         TOOWOOMBA 
-##                 1                 3                 1                 2 
-##        WHITSUNDAY            WINTON 
-##                 1                 3</code></pre>
+##            BANANA        BARCALDINE    BLACKALL TAMBO         BUNDABERG 
+##                 1                 2                 1                 2 
+##            CAIRNS       CARPENTARIA CENTRAL HIGHLANDS              COOK 
+##                 2                 2                 2                 1 
+##      FRASER COAST         GLADSTONE        GOLD COAST            GYMPIE 
+##                 1                 1                 3                 1 
+##       LIVINGSTONE           MAREEBA          MCKINLAY            MURWEH 
+##                 2                 1                 1                 2 
+##             NOOSA     NORTH BURNETT           REDLAND       ROCKHAMPTON 
+##                 2                 3                 2                 2 
+##     SOUTH BURNETT    SOUTHERN DOWNS    SUNSHINE COAST        TABLELANDS 
+##                 4                 1                 2                 1 
+##         TOOWOOMBA            TORRES             WEIPA        WHITSUNDAY 
+##                 2                 2                 2                 1 
+##            WINTON 
+##                 1</code></pre>
 <p>Challenge: find which Local government area had the lowest non-zero amount of money lost in a month.</p>
 </div>
 </div>
