@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       cache = FALSE)
 ```
 
-[Back to homepage](https://pages.github.sydney.edu.au/niho7662/bmc_r_2018/)
+[Back to homepage](https://n-ho.github.io/bmc_r_workshop_2018/)
 
 ## Introduction
 
