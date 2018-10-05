@@ -51,6 +51,19 @@ First let's set up the Rstudio panes so that everyone is on the same page.
 **Bottom right:** Environment, History, etc
 
 
+### Starting a new R-project
+
+We'll start a new R-project so we can save our progress and relaunch at anytime. 
+
+*File* -> *New Project* -> *New Directory* -> *Empty Project*
+
+We'll call our project "introduction_into_r" and save it in, say, "Documents" folder (or "My Documents" for Windows users)
+
+Note that in "Files", you have a new Rproj file.
+
+
+### Install prerequisites
+
 Below is a script that installs packages that you will need for the next three days and also sets some options which will make the course run smoothly. We will explain what the script does as we get further into the material, but for the meantime we would ask that you copy the script and run it in your environment.
 
 ```{r installation, eval=FALSE, message=FALSE}
@@ -70,32 +83,36 @@ set.seed(2018)
 ```
 
 
-## R variable types
+### R variable and data types
 
 First, we introduce the common variable types and data types that you'll be working with in R. Commonly, errors involve using the wrong variable or data type 
 
-### Variable types
-**integer** variables are whole numbers e.g. 1, 100, -9
+**Variable type** | **Type** | **Example**
+------------|---------------|---------------------------------
+integer | Whole numbers | 1, 100, -9
+numeric | Decimals | 0.1, -0.09, 234.567
+character | Text | "A", "hello", "welcome"
+logical | Booleans | TRUE or FALSE
+factor | Categorical | "green", "blue", "red", "purple"
 
-**numeric** variables are decimals e.g. 0.1, 0.99, -0.05
-
-**character** variables are text e.g. "a", "hello", "welcome"
-
-**logical** variables are booleans i.e. TRUE or FALSE
-
-**factor** variables are categorical e.g. "green", "blue", "red", "purple"
+**Data type** | **Type**
+---------------|------------------------------------------------
+vector | 1D collection of variables of the same type 
+matrix | 2D collection of variables of the same type
+data.frame | 2D collection of variables of multiple types
 
 
-### Data types
-A **vector** is a 1D collection of variables of the same type
-
-A **matrix** is a 2D collection of variables of the same type
-
-A **dataframe** is a 2D collection of variables of multiple types
-
-![](Rvariablesdata.jpg)
+![R variable and data types](Rvariablesdata.jpg)
 
 ## Getting Started
+
+
+### Working directory
+We've created this project in a "working directory". To check where this is, use:
+```{r}
+getwd()
+```
+
 
 ### Calculating things in R
 
@@ -191,7 +208,7 @@ Return the first N rows of your data frame
 head(bmc.data)
 ```
 
-The default for the head() function is to show the first 6 rows. How do we know this? Type "?" infront of the function name in your console
+The default for the `head()` function is to show the first 6 rows. How do we know this? Type `?` infront of the function name in your console
 ```{r}
 ?head
 ```
@@ -246,7 +263,7 @@ females
 bmc.data[females, ]
 ```
 
-Another way to subset the patients is with the *which()* function
+Another way to subset the patients is with the `which()` function
 ```{r}
 females <- which(bmc.data$gender == "Female")
 females
@@ -262,38 +279,48 @@ bmc.data[bmc.data$age > 16, ]
 ```
 
 
-Quiz: 
+### Quiz
 1. Return those patients whose clinical stage is "1a"
+
 2. Return those patients whose biomarker1 value is less than 6
+
 3. Return just the first name of all patients older than 16 years of age
+
 
 
 
 ## More Realistic Data
 
-The dataset that we will be using today is taken from the Queensland Government website and is [Gaming Machine Data by Local Government Areas](https://data.qld.gov.au/dataset/gaming-machine-data-by-local-government-areas). It has the following variables:
+The dataset that we will be using today is taken from University of California, Irvine's Machine Learning Repository. We will be examining the [Autism Screening Adult Data Set](https://archive.ics.uci.edu/ml/datasets/Autism+Screening+Adult). This is data collected by Dr Fadi Fayez Thabtah at NMIT via the mobile app ASD Tests.
+
+Click [here](https://raw.githubusercontent.com/n-ho/bmc_r_workshop_2018/master/_episodes/autism_data.csv) to open the data on your browser. Then, right-click and Save As "autism_data" in the "comma-separated values" or "csv" format into your working directory.
 
 Variable | Definition
 -----------------|------------------------------------------------
-Month Year | The month and year from which the gambling data is provided.
-LGA Region Name | The name of the Local Government Area.
-Approved Sites | The number of venues approved to operate electronic gaming machines.
-Operational Sites | The number of venues that were operating electronic gaming machines on the last day of the relevant month.
-Approved EGMs | The maximum number of electronic gaming machines the venue is approved to operate.
-Operational EGMs | The number of electronic gaming machines operating at the venue on the last day of the revelant month.
-Metered Win | The amount of money lost by players of eletronic gaming machines.
+id | The participant's ID number
+AX_Score | Score based on the Autism Spectrum Quotient (AQ) 10 item screening tool [AQ-10](http://docs.autismresearchcentre.com/tests/AQ10.pdf)
+age | Age in years
+gender | Male or Female
+ethnicity | Ethnicities in text form
+jaundice | Whether or not the participant was born with jaundice?
+autism | Whether or not anyone in tbe immediate family has been diagnosed with autism?
+country_of_res| Countries in text format
+used_app_before | Whether the participant has used a screening app
+result | Score from the AQ-10 screening tool
+age_desc | Age as categorical
+relation | Relation of person who completed the test
+Class/ASD | Participant classification
 
-If you haven't already, the data can be downloaded from the homepage of this course, or alternatively you can click [here](http://data.justice.qld.gov.au/JSD/OLGR/20170817_OLGR_LGA-EGM-data.csv).
 
 ### Reading in Data
 
 The first thing to do before we can begin an analysis is loading some data. To do this we can use the below command.
 
 ```{r read_data_1}
-gambling.data <- read.csv(file = "http://data.justice.qld.gov.au/JSD/OLGR/20170817_OLGR_LGA-EGM-data.csv",
-                 header = TRUE,
-                 sep = ",",
-                 stringsAsFactors = FALSE)
+autism.data <- read.csv(file = "autism_data.csv",
+                        header = TRUE,
+                        sep = ",",
+                        na.strings = "?")
 ```
 
 Before going any further, let's break down what this command does specifically.
@@ -302,8 +329,8 @@ Before going any further, let's break down what this command does specifically.
 - a file path e.g. `"~/Documents/MyFolder/datafile.csv"`
 - a url like we have here e.g. `"http://www.website.com/subdomain/datafile.csv"`
 2. It specifies that the first row in the csv file contains "header" information i.e. column names
-3. It specifies that neighbouring columns are separated by a comma ","
-4. It says not to convert charachter strings (i.e. text) to something called a factor
+3. It specifies that neighbouring columns are separated by a comma "," 
+4. It specifies that this CSV file uses "?" as the text for missing data
 
 How would we find this out if we didn't know already? Look at the help file:
 ```{r eval=FALSE}
@@ -324,38 +351,43 @@ In the package "xlsx":
 
 - `read.xlsx()`
 
-In the package "foreign":
+In the package "haven":
 
-- `read.dta()` for STATA (version 5-12) data files 
-- `read.spss()` for SPSS files
-
-How can we examine this data set now that we've loaded it?
-
+- `read_spss()` for SPSS files
 
 
 ### Viewing The Data
-Use the function `View()` to visually look at the data
-
-```{r eval=FALSE}
-View(gambling.data)
+Remember, we use the function `View()` to visually inspect at the data
+```{r, eval = FALSE}
+View(autism.data)
 ```
 
+
+What variables are included in this dataset?
+```{r}
+colnames(autism.data)
+```
+
+
+A handy way to inspect your data is to summarise it. To do so, use the `summary()` function
+```{r}
+summary(autism.data)
+```
+
+
 ### Changing The Column Names
-Using the background information on the dataset, change the column names so they make sense.
-
-
 ```{r changeNames}
-names(gambling.data)
+colnames(autism.data)
 
-names(gambling.data)[2] <- "Local.Govt.Area"
+colnames(autism.data)[1] <- ""
 
-names(gambling.data)[7] <- "Player.Money.Lost"
+names(autism.data)[7] <- "Player.Money.Lost"
 ```
 
 Afterwards, view the data again to check the column names have been changed.
 
 ```{r eval=FALSE}
-View(gambling.data)
+View(autism.data)
 ```
 
 ### Add a new Date column
@@ -374,22 +406,22 @@ Now let's convert the character string which we have describing the month and ye
 
 ```{r}
 #Add a day of month (1st) to each date string
-date.string <- paste0( "1 " , gambling.data$Month.Year )
+date.string <- paste0( "1 " , autism.data$Month.Year )
 
 #Convert to POSIXlt, a date-time format
-strptime( date.string , format = "%d %B %Y" ) -> gambling.data$Date
+strptime( date.string , format = "%d %B %Y" ) -> autism.data$Date
 ```
 
 Afterwards, view the data again to check the new "Date" column.
 
 ```{r eval=FALSE}
-View(gambling.data)
+View(autism.data)
 ```
 
 ### Accessing Subsets
 Let's look at all the records for Brisbane:
 ```{r}
-brisbane.only<-gambling.data[gambling.data$Local.Govt.Area=="BRISBANE",]
+brisbane.only<-autism.data[autism.data$Local.Govt.Area=="BRISBANE",]
 ```
 
 What is the average amount of money lost by players in any given month in Brisbane?
@@ -424,7 +456,7 @@ On the last line we used a shortcut; if you want to assign a variable with `<-` 
 Use the summary function to return a quick summary
 
 ```{r}
-summary(gambling.data)
+summary(autism.data)
 summary(brisbane.only)
 summary(brisbane.2010.data)
 ```
@@ -438,7 +470,7 @@ summary(brisbane.2010.data$Player.Money.Lost)
 Get a random selection of data and look at which Local government areas are included
 
 ```{r}
-random.fifty.rows<-dplyr::sample_n(gambling.data,50)
+random.fifty.rows<-dplyr::sample_n(autism.data,50)
 
 #look at each row's Local Government Area (LGA)
 random.fifty.rows$Local.Govt.Area
@@ -461,9 +493,9 @@ There are several different types of data you can use in R, and you can even mak
 Character strings are known as "character" in R:
 
 ```{r}
-gambling.data$Local.Govt.Area[3]
+autism.data$Local.Govt.Area[3]
 
-class(gambling.data$Local.Govt.Area)
+class(autism.data$Local.Govt.Area)
 ```
 
 ### Numbers
@@ -471,17 +503,17 @@ class(gambling.data$Local.Govt.Area)
 Numbers have different classes, they can be integer:
 
 ```{r}
-gambling.data$Operational.EGMs[36]
+autism.data$Operational.EGMs[36]
 
-class(gambling.data$Operational.EGMs)
+class(autism.data$Operational.EGMs)
 ```
 
 They can be numeric:
 
 ```{r}
-gambling.data$Player.Money.Lost[84]
+autism.data$Player.Money.Lost[84]
 
-class(gambling.data$Player.Money.Lost)
+class(autism.data$Player.Money.Lost)
 
 class(0.1)
 
