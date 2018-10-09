@@ -534,7 +534,9 @@ max(autism.data$age, na.rm = TRUE)
 which.max(autism.data$age)
 ```
 
-Someone is apparently 383 years old! Let's remove this person. To do so, we'll use the `-` sign in front of the indices we want.
+Someone is apparently 383 years old! There are a number of possibilities why this value is here with a range of probabilities from the most likely (the participant made a typo) to the least (the participant is yoda).
+
+For our purposes, let's remove this person. To do so, we'll use the `-` sign in front of the indices we want.
 ```{r}
 autism.data <- autism.data[-which.max(autism.data$age), ]
 ```
