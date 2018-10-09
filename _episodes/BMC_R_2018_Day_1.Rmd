@@ -139,6 +139,47 @@ myvariable
 
 myvariable^2
 ```
+## Variable Types
+
+There are several different types of data you can use in R. We'll examine a few common ones in a little more detail.
+
+### Text
+Strings are known as "character" in R. Use the double quotes `"` or single quotes `'` to wrap around the string 
+```{r}
+myname <- "nick"
+```
+
+We can use the `class()` function to see what data type it is
+```{r}
+class(myname)
+```
+
+### Numbers
+Numbers have different classes. The most common two are `integer` and `numerics`. Integers are whole numbers:
+```{r}
+favourite.integer <- as.integer(8)
+print(favourite.integer)
+class(favourite.integer)
+```
+
+Numbers can be `numeric` which are decimals:
+```{r}
+favourite.numeric <- as.numeric(8.8)
+print(favourite.numeric)
+class(favourite.numeric)
+
+pvalue.threshold <- 0.05
+```
+
+### Logical (True/False)
+We use the `==` to test for equality in R
+```{r}
+class(TRUE)
+
+favourite.numeric == 8.8
+
+favourite.numeric == 9.9
+```
 
 
 ### Vectors
@@ -162,9 +203,44 @@ myvector
 b <- c(3,4,5)
 b^2
 
-disorders <- c("autism","ocd ","depression")
+disorders <- c("autism","ocd", "depression", "ocd", "anxiety", "autism")
 disorders
 ```
+
+
+### Factors
+A factor are categorical data. Under the hood, factors are actually integers that have a string label attached to each unique integer.
+```{r}
+disorders <- as.factor(disorders)
+class(disorders)
+```
+
+How many categories are there for ethnicity and what are they?
+```{r}
+levels(disorders)
+
+nlevels(disorders)
+```
+
+A factor can be ordered. This makes sense in the context of a ranking such as a survey response, e.g. Strongly agree to Strong disagree. 
+```{r}
+responses <- c("low", "high", "medium", "low", "low", "high", "high", "medium", "medium")
+
+myfactor <- factor(responses, levels = c("low", "medium", "high"))
+
+myorderedfactor <- factor(responses, levels = c("low", "medium", "high"), ordered = TRUE)
+
+levels(myfactor)
+```
+
+Now our factor is ordered, we can find the lowest category by using `min()`
+```{r, error = TRUE}
+min(myfactor) #this will fail
+
+min(myorderedfactor)
+```
+
+
 
 ### Data frames
 
@@ -183,7 +259,7 @@ bmc.data <- data.frame(fname = c("Alice", "Bob", "Carol", "David"),
                        gender = as.factor(c("Female", "Male", "Female", "Male")),
                        disorder = c("autism", "anxiety", "autism", "depression"),
                        age = c(20, 45, 15, 12),
-                       biomarker1 = c(5, 4, 1, 10),
+                       biomarker1 = c(5.70, 4.96, 1.37, 10.44),
                        clinicalstage = c("1b", "1a", "1a", "2"),
                        stringsAsFactors = FALSE)
 ```
@@ -278,11 +354,25 @@ What if we want all patients older than 16 years of age?
 bmc.data[bmc.data$age > 16, ]
 ```
 
+### Adding records
+Add a new row to the data set using the rbind() function:
+
+```{r eval=FALSE}
+new.person <- data.frame(fname = "Evelyn",
+                         gender = "Female",
+                         disorder = "anxiety",
+                         age = 27,
+                         biomarker1 = 40.8,
+                         clinicalstage = "2")
+
+bmc.data <- rbind(bmc.data, new.person)
+```
+
 
 ### Quiz
 1. Return those patients whose clinical stage is "1a"
 
-2. Return those patients whose biomarker1 value is less than 6
+2. Return those patients whose biomarker1 value is less than 6.7
 
 3. Return just the first name of all patients older than 16 years of age
 
@@ -363,20 +453,20 @@ View(autism.data)
 ```
 
 
+What data type is this data?
+```{r}
+class(autism.data)
+```
+
+
 What variables are included in this dataset?
 ```{r}
 colnames(autism.data)
 ```
 
 
-A handy way to inspect your data is to summarise it. To do so, use the `summary()` function
-```{r}
-summary(autism.data)
-```
-
-
 ### Changing The Column Names
-We've a typo in the country of residence column. Let's correct this.
+We've a typo in the country of residence column. Let's correct this by first finding the column with the typo. 
 ```{r}
 colnames(autism.data)
 
@@ -406,7 +496,7 @@ paste("hel", "lo", sep = "")
 
 Now let's add the letter "P" to the front of the IDS. Then, we'll add this as a new column
 ```{r}
-new_ids <- paste( "P" , autism.data$id, sep = "")
+new_ids <- paste( "PatientID_" , autism.data$id, sep = "")
 
 autism.data$pids <- new_ids 
 ```
@@ -444,224 +534,91 @@ max(autism.data$age, na.rm = TRUE)
 which.max(autism.data$age)
 ```
 
-Someone is apparently 383 years old! Let's remove this person
+Someone is apparently 383 years old! Let's remove this person. To do so, we'll use the `-` sign in front of the indices we want.
 ```{r}
 autism.data <- autism.data[-which.max(autism.data$age), ]
 ```
 
-
+Who is the youngest person in this dataset and how old are they?
 ```{r}
-brisbane.only$Month.Year[which.max(brisbane.only$Player.Money.Lost)]
+min(autism.data$age, na.rm = TRUE)
+
+which.min(autism.data$age)
 ```
 
 
-What if we want the rows from brisbane which happen in 2010?
-```{r}
-row.indicies<-(brisbane.only$Date>="2010-01-01 AEST" &
-                 brisbane.only$Date<="2010-12-31 AEST")
-
-(brisbane.2010.data<-brisbane.only[row.indicies,])
-
-```
-
-On the last line we used a shortcut; if you want to assign a variable with `<-` but also print it, you can put the whole expression in parentheses.
-
-### Summarising The Data
-Use the summary function to return a quick summary
-
+### Summarising Your Data
+A handy way to inspect your data is to summarise it. To do so, use the `summary()` function
 ```{r}
 summary(autism.data)
-summary(brisbane.only)
-summary(brisbane.2010.data)
 ```
 
-Use the summary function to return a quick summary of only the money column
 
+Use the summary function to return a quick summary of only the country column
 ```{r}
-summary(brisbane.2010.data$Player.Money.Lost)
+summary(autism.data$country)
 ```
 
-Get a random selection of data and look at which Local government areas are included
 
+Why does the summary function give you quartiles for some column and provide counts for others? Remember that data frames are 2D collections that can hold data of different types
 ```{r}
-random.fifty.rows<-dplyr::sample_n(autism.data,50)
+class(autism.data$age)
+summary(autism.data$age)
 
-#look at each row's Local Government Area (LGA)
-random.fifty.rows$Local.Govt.Area
 
-#look at the unique local government areas (duplicates removed)
-unique(random.fifty.rows$Local.Govt.Area)
-
-#look at how many rows there are for each LGA
-table(random.fifty.rows$Local.Govt.Area)
+class(autism.data$country)
+summary(autism.data$country)
 ```
 
-Challenge: find which Local government area had the lowest non-zero amount of money lost in a month.
 
-## Data Types
-
-There are several different types of data you can use in R, and you can even make your own new *types* (but we won't touch on that today). Now we will examine a few common ones in a little more detail.
-
-### Strings
-
-Character strings are known as "character" in R:
-
+Another way to summarise a `factor` column is to use the `table()` function
 ```{r}
-autism.data$Local.Govt.Area[3]
-
-class(autism.data$Local.Govt.Area)
+table(autism.data$country)
 ```
 
-### Numbers
 
-Numbers have different classes, they can be integer:
-
+A difference between using the `summary()` function over the `table()` function for factors is that by default, the `summary()` function also counts `NA` values whereas in this must be specified for `table()` 
 ```{r}
-autism.data$Operational.EGMs[36]
+summary(autism.data$ethnicity)
 
-class(autism.data$Operational.EGMs)
-```
+table(autism.data$ethnicity)
 
-They can be numeric:
-
-```{r}
-autism.data$Player.Money.Lost[84]
-
-class(autism.data$Player.Money.Lost)
-
-class(0.1)
-
-class(pi)
-```
-They can be complex:
-
-```{r}
-class(1i+3)
-```
-
-They can be double:
-
-```{r}
-x<-as.double(3.345678987654323456789)
-```
-
-They can have rounding errors
-```{r}
-x-(x-0.0000000000001)
-```
-
-### Logical (True/False)
-
-```{r}
-class(TRUE)
-class(1==1)
-```
-
-### Factor
-
-A factor is a string label on top of an integer index
-
-```{r}
-as.factor("I am a label")
-```
-
-This makes most sense in the context of a survey response, e.g. 1=Good, 2, 3=Average, 4, 5=Bad; or something like that. For example in the simple data we had at the beginning, gender is a factor.
-
-```{r}
-class(bmc.data$gender)
-bmc.data$gender
-as.numeric(bmc.data$gender)
-table(bmc.data$gender)
+table(autism.data$ethnicity, useNA = "ifany")
 ```
 
 
-### Vectors and Lists
-Vectors are all of the same class
+###Quiz
+
+1. What is the proportions to males to females in this dataset?
+
+2. Return those participants whose `gender` is female 
+
+3. Return those participants whose `gender` is female into a new data frame called "females.autism.data"
+
+4. What is the mean `result` score for those classified as ASD
+
+5. What is the mean `result` score for those not classified as ASD
 
 
-```{r}
-#a vector
-c("a","b","c")
-
-#another vector
-c(1,4,7)
-```
-
-If you try to put different classes of things into a vector it will try to convert them to the same class.
-
-```{r}
-#this will be converted to a vector of character strings
-(what.am.I<-c("a",2,"c",FALSE,c(1,2,3)))
-class(what.am.I)
-```
-
-Lists can contain different classes of things in each element, possibly of different lengths
-```{r}
-#a list
-list("a",2,"c",FALSE,c(1,2,3))
-```
-
-### Data frames
-
-Data frames are really a list of vectors of equal length, and they function like a table of data. We made one right at the beginning:
-
-```{r eval=FALSE}
-bmc.data<-data.frame(first.name=c("Alice",
-                                     "Bob",
-                                     "Cathy",
-                                     "Daniel"),
-                        gender=as.factor(c("Female",
-                                           "Male",
-                                           "Female",
-                                           "Male")),
-                        favourite.number=c(4,23,pi,exp(1)),
-                        favourite.letter=c("a","c","x","q"),
-                        favourite.weekday=c("Monday","Thursday","Sunday","Friday"),
-                        stringsAsFactors = FALSE)
-```
-
-- We made a column called "first.name", a vector of character strings (favourite.letter and favourite.weekday are also character strings)
-
-- We made a column called "gender", a vector of factors
-
-- We made a column called "favourite.number", a vector of class numeric
-
-- Lastly we told it to not convert all the character string colums into factors (which is something it does by default) by adding the optional argument `stringsAsFactors = FALSE` to the `data.frame()` function.
-
-### Adding records
-Add a new row to the data set using the rbind() function:
-
-```{r eval=FALSE}
-new.person <- data.frame(first.name="Evelyn",
-                        gender="Female",
-                        favourite.number=12,
-                        favourite.letter="z",
-                        favourite.weekday="Monday",
-                        stringsAsFactors = FALSE)
-
-bmc.data<-rbind(bmc.data,new.person)
-
-```
 
 
-## Writing Data
-Use the write.table() function to make the datafile a text file
+
+
+## Writing the data out
+Use the write.table() function to make the data file a text file
 
 ```{r}
 write.table(x = bmc.data,
-            file = "simpleData.txt",
+            file = "bmcdata.txt",
             row.names = FALSE,
             col.names = TRUE,
             sep = ",")
 ```
 
 Use the write.csv() function to make the datafile a csv (comma separated values) file
-
 ```{r}
 write.csv(x = bmc.data,
-          file = "simpleData.csv",
+          file = "bmcdata.csv",
           row.names = FALSE)
 ```
 
-          
-Use the write.xlsx

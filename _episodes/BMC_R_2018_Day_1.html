@@ -377,6 +377,44 @@ myvariable</code></pre>
 <pre class="r"><code>myvariable^2</code></pre>
 <pre><code>## [1] 9</code></pre>
 </div>
+</div>
+<div id="variable-types" class="section level2">
+<h2>Variable Types</h2>
+<p>There are several different types of data you can use in R. We’ll examine a few common ones in a little more detail.</p>
+<div id="text" class="section level3">
+<h3>Text</h3>
+<p>Strings are known as “character” in R. Use the double quotes <code>&quot;</code> or single quotes <code>'</code> to wrap around the string</p>
+<pre class="r"><code>myname &lt;- &quot;nick&quot;</code></pre>
+<p>We can use the <code>class()</code> function to see what data type it is</p>
+<pre class="r"><code>class(myname)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+</div>
+<div id="numbers" class="section level3">
+<h3>Numbers</h3>
+<p>Numbers have different classes. The most common two are <code>integer</code> and <code>numerics</code>. Integers are whole numbers:</p>
+<pre class="r"><code>favourite.integer &lt;- as.integer(8)
+print(favourite.integer)</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>class(favourite.integer)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>Numbers can be <code>numeric</code> which are decimals:</p>
+<pre class="r"><code>favourite.numeric &lt;- as.numeric(8.8)
+print(favourite.numeric)</code></pre>
+<pre><code>## [1] 8.8</code></pre>
+<pre class="r"><code>class(favourite.numeric)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>pvalue.threshold &lt;- 0.05</code></pre>
+</div>
+<div id="logical-truefalse" class="section level3">
+<h3>Logical (True/False)</h3>
+<p>We use the <code>==</code> to test for equality in R</p>
+<pre class="r"><code>class(TRUE)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre class="r"><code>favourite.numeric == 8.8</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>favourite.numeric == 9.9</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
 <div id="vectors" class="section level3">
 <h3>Vectors</h3>
 <p>We can create 1D data structures called “vectors”.</p>
@@ -395,9 +433,37 @@ myvector</code></pre>
 <pre class="r"><code>b &lt;- c(3,4,5)
 b^2</code></pre>
 <pre><code>## [1]  9 16 25</code></pre>
-<pre class="r"><code>disorders &lt;- c(&quot;autism&quot;,&quot;ocd &quot;,&quot;depression&quot;)
+<pre class="r"><code>disorders &lt;- c(&quot;autism&quot;,&quot;ocd&quot;, &quot;depression&quot;, &quot;ocd&quot;, &quot;anxiety&quot;, &quot;autism&quot;)
 disorders</code></pre>
-<pre><code>## [1] &quot;autism&quot;     &quot;ocd &quot;       &quot;depression&quot;</code></pre>
+<pre><code>## [1] &quot;autism&quot;     &quot;ocd&quot;        &quot;depression&quot; &quot;ocd&quot;        &quot;anxiety&quot;   
+## [6] &quot;autism&quot;</code></pre>
+</div>
+<div id="factors" class="section level3">
+<h3>Factors</h3>
+<p>A factor are categorical data. Under the hood, factors are actually integers that have a string label attached to each unique integer.</p>
+<pre class="r"><code>disorders &lt;- as.factor(disorders)
+class(disorders)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<p>How many categories are there for ethnicity and what are they?</p>
+<pre class="r"><code>levels(disorders)</code></pre>
+<pre><code>## [1] &quot;anxiety&quot;    &quot;autism&quot;     &quot;depression&quot; &quot;ocd&quot;</code></pre>
+<pre class="r"><code>nlevels(disorders)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>A factor can be ordered. This makes sense in the context of a ranking such as a survey response, e.g. Strongly agree to Strong disagree.</p>
+<pre class="r"><code>responses &lt;- c(&quot;low&quot;, &quot;high&quot;, &quot;medium&quot;, &quot;low&quot;, &quot;low&quot;, &quot;high&quot;, &quot;high&quot;, &quot;medium&quot;, &quot;medium&quot;)
+
+myfactor &lt;- factor(responses, levels = c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;))
+
+myorderedfactor &lt;- factor(responses, levels = c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;), ordered = TRUE)
+
+levels(myfactor)</code></pre>
+<pre><code>## [1] &quot;low&quot;    &quot;medium&quot; &quot;high&quot;</code></pre>
+<p>Now our factor is ordered, we can find the lowest category by using <code>min()</code></p>
+<pre class="r"><code>min(myfactor) #this will fail</code></pre>
+<pre><code>## Error in Summary.factor(structure(c(1L, 3L, 2L, 1L, 1L, 3L, 3L, 2L, 2L: 'min' not meaningful for factors</code></pre>
+<pre class="r"><code>min(myorderedfactor)</code></pre>
+<pre><code>## [1] low
+## Levels: low &lt; medium &lt; high</code></pre>
 </div>
 <div id="data-frames" class="section level3">
 <h3>Data frames</h3>
@@ -410,7 +476,7 @@ disorders</code></pre>
                        gender = as.factor(c(&quot;Female&quot;, &quot;Male&quot;, &quot;Female&quot;, &quot;Male&quot;)),
                        disorder = c(&quot;autism&quot;, &quot;anxiety&quot;, &quot;autism&quot;, &quot;depression&quot;),
                        age = c(20, 45, 15, 12),
-                       biomarker1 = c(5, 4, 1, 10),
+                       biomarker1 = c(5.70, 4.96, 1.37, 10.44),
                        clinicalstage = c(&quot;1b&quot;, &quot;1a&quot;, &quot;1a&quot;, &quot;2&quot;),
                        stringsAsFactors = FALSE)</code></pre>
 </div>
@@ -431,43 +497,43 @@ disorders</code></pre>
 <p>Return the first N rows of your data frame</p>
 <pre class="r"><code>head(bmc.data)</code></pre>
 <pre><code>##   fname gender   disorder age biomarker1 clinicalstage
-## 1 Alice Female     autism  20          5            1b
-## 2   Bob   Male    anxiety  45          4            1a
-## 3 Carol Female     autism  15          1            1a
-## 4 David   Male depression  12         10             2</code></pre>
+## 1 Alice Female     autism  20       5.70            1b
+## 2   Bob   Male    anxiety  45       4.96            1a
+## 3 Carol Female     autism  15       1.37            1a
+## 4 David   Male depression  12      10.44             2</code></pre>
 <p>The default for the <code>head()</code> function is to show the first 6 rows. How do we know this? Type <code>?</code> infront of the function name in your console</p>
 <pre class="r"><code>?head</code></pre>
 <p>Return the first 3 rows of your data frame</p>
 <pre class="r"><code>head(bmc.data, n = 3)</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 2   Bob   Male  anxiety  45          4            1a
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 2   Bob   Male  anxiety  45       4.96            1a
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <pre class="r"><code>head(bmc.data, 3)</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 2   Bob   Male  anxiety  45          4            1a
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 2   Bob   Male  anxiety  45       4.96            1a
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <pre class="r"><code>bmc.data[1:3, ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 2   Bob   Male  anxiety  45          4            1a
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 2   Bob   Male  anxiety  45       4.96            1a
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <pre class="r"><code>bmc.data[c(1, 2, 3), ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 2   Bob   Male  anxiety  45          4            1a
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 2   Bob   Male  anxiety  45       4.96            1a
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <pre class="r"><code>bmc.data[c(TRUE, TRUE, TRUE, FALSE), ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 2   Bob   Male  anxiety  45          4            1a
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 2   Bob   Male  anxiety  45       4.96            1a
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <p>Return the last 2 rows in a data set</p>
 <pre class="r"><code>tail(bmc.data, 2)</code></pre>
 <pre><code>##   fname gender   disorder age biomarker1 clinicalstage
-## 3 Carol Female     autism  15          1            1a
-## 4 David   Male depression  12         10             2</code></pre>
+## 3 Carol Female     autism  15       1.37            1a
+## 4 David   Male depression  12      10.44             2</code></pre>
 <p>Return the “age” column in the data set</p>
 <pre class="r"><code>bmc.data$age</code></pre>
 <pre><code>## [1] 20 45 15 12</code></pre>
@@ -480,55 +546,67 @@ disorders</code></pre>
 <p>Return only the first 3 rows and columns 2 and 5 of the data set</p>
 <pre class="r"><code>bmc.data[1:3, c(2,5)]</code></pre>
 <pre><code>##   gender biomarker1
-## 1 Female          5
-## 2   Male          4
-## 3 Female          1</code></pre>
+## 1 Female       5.70
+## 2   Male       4.96
+## 3 Female       1.37</code></pre>
 <p>Return the columns named “fname” and “biomarker1”</p>
 <pre class="r"><code>bmc.data[,c(&quot;fname&quot;, &quot;biomarker1&quot;)]</code></pre>
 <pre><code>##   fname biomarker1
-## 1 Alice          5
-## 2   Bob          4
-## 3 Carol          1
-## 4 David         10</code></pre>
+## 1 Alice       5.70
+## 2   Bob       4.96
+## 3 Carol       1.37
+## 4 David      10.44</code></pre>
 </div>
 <div id="filtering-the-data" class="section level3">
 <h3>Filtering the data</h3>
 <p>Return only the rows (patients) who are Female</p>
 <pre class="r"><code>bmc.data[bmc.data$gender == &quot;Female&quot;, ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <p>What exactly happened here? We made a vector of <code>TRUE/FALSE</code> statements, for each row in which this condition is true and then we subset rows in which the index is true</p>
 <pre class="r"><code>females &lt;- bmc.data$gender == &quot;Female&quot;
 females</code></pre>
 <pre><code>## [1]  TRUE FALSE  TRUE FALSE</code></pre>
 <pre class="r"><code>bmc.data[females, ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <p>Another way to subset the patients is with the <code>which()</code> function</p>
 <pre class="r"><code>females &lt;- which(bmc.data$gender == &quot;Female&quot;)
 females</code></pre>
 <pre><code>## [1] 1 3</code></pre>
 <pre class="r"><code>bmc.data[females, ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <pre class="r"><code>bmc.data[which(bmc.data$gender == &quot;Female&quot;), ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 3 Carol Female   autism  15          1            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 3 Carol Female   autism  15       1.37            1a</code></pre>
 <p>What if we want all patients older than 16 years of age?</p>
 <pre class="r"><code>bmc.data[bmc.data$age &gt; 16, ]</code></pre>
 <pre><code>##   fname gender disorder age biomarker1 clinicalstage
-## 1 Alice Female   autism  20          5            1b
-## 2   Bob   Male  anxiety  45          4            1a</code></pre>
+## 1 Alice Female   autism  20       5.70            1b
+## 2   Bob   Male  anxiety  45       4.96            1a</code></pre>
+</div>
+<div id="adding-records" class="section level3">
+<h3>Adding records</h3>
+<p>Add a new row to the data set using the rbind() function:</p>
+<pre class="r"><code>new.person &lt;- data.frame(fname = &quot;Evelyn&quot;,
+                         gender = &quot;Female&quot;,
+                         disorder = &quot;anxiety&quot;,
+                         age = 27,
+                         biomarker1 = 40.8,
+                         clinicalstage = &quot;2&quot;)
+
+bmc.data &lt;- rbind(bmc.data, new.person)</code></pre>
 </div>
 <div id="quiz" class="section level3">
 <h3>Quiz</h3>
 <ol style="list-style-type: decimal">
 <li><p>Return those patients whose clinical stage is “1a”</p></li>
-<li><p>Return those patients whose biomarker1 value is less than 6</p></li>
+<li><p>Return those patients whose biomarker1 value is less than 6.7</p></li>
 <li><p>Return just the first name of all patients older than 16 years of age</p></li>
 </ol>
 </div>
@@ -645,376 +723,341 @@ females</code></pre>
 <h3>Viewing The Data</h3>
 <p>Remember, we use the function <code>View()</code> to visually inspect at the data</p>
 <pre class="r"><code>View(autism.data)</code></pre>
-<p>Another handy way of summarising your data is to use the <code>summary()</code> function</p>
-</div>
-<div id="changing-the-column-names" class="section level3">
-<h3>Changing The Column Names</h3>
-<p>Using the background information on the dataset, change the column names so they make sense.</p>
+<p>What data type is this data?</p>
+<pre class="r"><code>class(autism.data)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>What variables are included in this dataset?</p>
 <pre class="r"><code>colnames(autism.data)</code></pre>
 <pre><code>##  [1] &quot;id&quot;              &quot;A1_Score&quot;        &quot;A2_Score&quot;       
 ##  [4] &quot;A3_Score&quot;        &quot;A4_Score&quot;        &quot;A5_Score&quot;       
 ##  [7] &quot;A6_Score&quot;        &quot;A7_Score&quot;        &quot;A8_Score&quot;       
 ## [10] &quot;A9_Score&quot;        &quot;A10_Score&quot;       &quot;age&quot;            
-## [13] &quot;gender&quot;          &quot;ethnicity&quot;       &quot;jundice&quot;        
-## [16] &quot;austim&quot;          &quot;contry_of_res&quot;   &quot;used_app_before&quot;
+## [13] &quot;gender&quot;          &quot;ethnicity&quot;       &quot;jaundice&quot;       
+## [16] &quot;autism&quot;          &quot;contry_of_res&quot;   &quot;used_app_before&quot;
 ## [19] &quot;result&quot;          &quot;age_desc&quot;        &quot;relation&quot;       
 ## [22] &quot;Class.ASD&quot;</code></pre>
-<pre class="r"><code>names(autism.data)[2] &lt;- &quot;Local.Govt.Area&quot;
-
-names(autism.data)[7] &lt;- &quot;Player.Money.Lost&quot;</code></pre>
-<p>Afterwards, view the data again to check the column names have been changed.</p>
+</div>
+<div id="changing-the-column-names" class="section level3">
+<h3>Changing The Column Names</h3>
+<p>We’ve a typo in the country of residence column. Let’s correct this by first finding the column with the typo.</p>
+<pre class="r"><code>colnames(autism.data)</code></pre>
+<pre><code>##  [1] &quot;id&quot;              &quot;A1_Score&quot;        &quot;A2_Score&quot;       
+##  [4] &quot;A3_Score&quot;        &quot;A4_Score&quot;        &quot;A5_Score&quot;       
+##  [7] &quot;A6_Score&quot;        &quot;A7_Score&quot;        &quot;A8_Score&quot;       
+## [10] &quot;A9_Score&quot;        &quot;A10_Score&quot;       &quot;age&quot;            
+## [13] &quot;gender&quot;          &quot;ethnicity&quot;       &quot;jaundice&quot;       
+## [16] &quot;autism&quot;          &quot;contry_of_res&quot;   &quot;used_app_before&quot;
+## [19] &quot;result&quot;          &quot;age_desc&quot;        &quot;relation&quot;       
+## [22] &quot;Class.ASD&quot;</code></pre>
+<pre class="r"><code>which(colnames(autism.data) == &quot;contry_of_res&quot;)</code></pre>
+<pre><code>## [1] 17</code></pre>
+<pre class="r"><code>colnames(autism.data)[17] &lt;- &quot;country&quot;</code></pre>
+<p>Afterwards, view the data again to check the column names have been changed</p>
 <pre class="r"><code>View(autism.data)</code></pre>
 </div>
-<div id="add-a-new-date-column" class="section level3">
-<h3>Add a new Date column</h3>
-<p>Time to add in a column which has the date as a date-time object instead of as a character string. We will need to use several functions to do this.</p>
-<p>The first function we will need is <code>paste0()</code>. This function concatenates strings. For example;</p>
-<pre class="r"><code>paste0(&quot;Wo&quot;,&quot;rd&quot;)</code></pre>
-<pre><code>## [1] &quot;Word&quot;</code></pre>
-<p>The second function we will need is <code>strptime()</code></p>
-<p>Use the help function to find out what it does: <code>?strptime</code></p>
-<p>Now let’s convert the character string which we have describing the month and year of each row of data, into a date-time object so that it will be ordered appropriately etc.</p>
-<pre class="r"><code>#Add a day of month (1st) to each date string
-date.string &lt;- paste0( &quot;1 &quot; , autism.data$Month.Year )
+<div id="add-a-new-column" class="section level3">
+<h3>Add a new column</h3>
+<p>Let’s create a better participant ID than just 1,2,3,…</p>
+<p>The first function we will need is <code>paste()</code>. This function concatenates strings. For example;</p>
+<pre class="r"><code>paste(&quot;hel&quot;, &quot;lo&quot;)</code></pre>
+<pre><code>## [1] &quot;hel lo&quot;</code></pre>
+<p>This leaves an unwanted gap, hence we’ll use the <code>sep</code> parameter</p>
+<pre class="r"><code>paste(&quot;hel&quot;, &quot;lo&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;hello&quot;</code></pre>
+<p>Now let’s add the letter “P” to the front of the IDS. Then, we’ll add this as a new column</p>
+<pre class="r"><code>new_ids &lt;- paste( &quot;PatientID_&quot; , autism.data$id, sep = &quot;&quot;)
 
-#Convert to POSIXlt, a date-time format
-strptime( date.string , format = &quot;%d %B %Y&quot; ) -&gt; autism.data$Date</code></pre>
-<pre><code>## Warning in strptime(date.string, format = &quot;%d %B %Y&quot;): unknown timezone
-## 'zone/tz/2018e.1.0/zoneinfo/Australia/Sydney'</code></pre>
-<p>Afterwards, view the data again to check the new “Date” column.</p>
+autism.data$pids &lt;- new_ids </code></pre>
+<p>Afterwards, view the data again to check the new “pids” column.</p>
 <pre class="r"><code>View(autism.data)</code></pre>
 </div>
 <div id="accessing-subsets-1" class="section level3">
 <h3>Accessing Subsets</h3>
-<p>Let’s look at all the records for Brisbane:</p>
-<pre class="r"><code>brisbane.only&lt;-autism.data[autism.data$Local.Govt.Area==&quot;BRISBANE&quot;,]</code></pre>
-<p>What is the average amount of money lost by players in any given month in Brisbane?</p>
-<pre class="r"><code>mean(brisbane.only$Player.Money.Lost)</code></pre>
-<pre><code>## [1] NaN</code></pre>
-<p>That’s a lot of money!</p>
-<p>What is the largest amount of money lost by players in any given month in Brisbane?</p>
-<pre class="r"><code>max(brisbane.only$Player.Money.Lost)</code></pre>
-<pre><code>## Warning in max(brisbane.only$Player.Money.Lost): no non-missing arguments
-## to max; returning -Inf</code></pre>
-<pre><code>## [1] -Inf</code></pre>
-<p>What month was this?</p>
-<pre class="r"><code>brisbane.only$Month.Year[which.max(brisbane.only$Player.Money.Lost)]</code></pre>
-<pre><code>## NULL</code></pre>
-<p>What if we want the rows from brisbane which happen in 2010?</p>
-<pre class="r"><code>row.indicies&lt;-(brisbane.only$Date&gt;=&quot;2010-01-01 AEST&quot; &amp;
-                 brisbane.only$Date&lt;=&quot;2010-12-31 AEST&quot;)
-
-(brisbane.2010.data&lt;-brisbane.only[row.indicies,])</code></pre>
-<pre><code>##  [1] id                Local.Govt.Area   A2_Score         
-##  [4] A3_Score          A4_Score          A5_Score         
-##  [7] Player.Money.Lost A7_Score          A8_Score         
-## [10] A9_Score          A10_Score         age              
-## [13] gender            ethnicity         jundice          
-## [16] austim            contry_of_res     used_app_before  
-## [19] result            age_desc          relation         
-## [22] Class.ASD         Date             
-## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<p>On the last line we used a shortcut; if you want to assign a variable with <code>&lt;-</code> but also print it, you can put the whole expression in parentheses.</p>
+<p>Let’s look at all the records for those with a family history of autism:</p>
+<pre class="r"><code>family.autism.data &lt;- autism.data[autism.data$autism == &quot;yes&quot;,]</code></pre>
+<p>What is the average AQ-10 score for those with a familial history of autism?</p>
+<pre class="r"><code>mean(family.autism.data$result)</code></pre>
+<pre><code>## [1] 6.120879</code></pre>
+<p>What about for those with no familial history of autism?</p>
+<pre class="r"><code>no.family.autism.data &lt;- autism.data[autism.data$autism == &quot;no&quot;,]
+mean(no.family.autism.data$result)</code></pre>
+<pre><code>## [1] 4.690049</code></pre>
+<p>Who is the oldest person in the dataset and what is their age?</p>
+<pre class="r"><code>max(autism.data$age)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code># ignore missing data
+max(autism.data$age, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 383</code></pre>
+<pre class="r"><code>which.max(autism.data$age)</code></pre>
+<pre><code>## [1] 53</code></pre>
+<p>Someone is apparently 383 years old! Let’s remove this person. To do so, we’ll use the <code>-</code> sign in front of the indices we want.</p>
+<pre class="r"><code>autism.data &lt;- autism.data[-which.max(autism.data$age), ]</code></pre>
+<p>Who is the youngest person in this dataset and how old are they?</p>
+<pre class="r"><code>min(autism.data$age, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 17</code></pre>
+<pre class="r"><code>which.min(autism.data$age)</code></pre>
+<pre><code>## [1] 7</code></pre>
 </div>
-<div id="summarising-the-data" class="section level3">
-<h3>Summarising The Data</h3>
-<p>Use the summary function to return a quick summary</p>
+<div id="summarising-your-data" class="section level3">
+<h3>Summarising Your Data</h3>
+<p>A handy way to inspect your data is to summarise it. To do so, use the <code>summary()</code> function</p>
 <pre class="r"><code>summary(autism.data)</code></pre>
-<pre><code>##        id        Local.Govt.Area     A2_Score         A3_Score     
-##  Min.   :  1.0   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
-##  1st Qu.:176.8   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000  
-##  Median :352.5   Median :1.0000   Median :0.0000   Median :0.0000  
-##  Mean   :352.5   Mean   :0.7216   Mean   :0.4531   Mean   :0.4574  
-##  3rd Qu.:528.2   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000  
-##  Max.   :704.0   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000  
-##                                                                    
-##     A4_Score         A5_Score      Player.Money.Lost    A7_Score     
-##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000    Min.   :0.0000  
-##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000    1st Qu.:0.0000  
-##  Median :0.0000   Median :0.0000   Median :0.0000    Median :0.0000  
-##  Mean   :0.4957   Mean   :0.4986   Mean   :0.2841    Mean   :0.4176  
-##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000    3rd Qu.:1.0000  
-##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000    Max.   :1.0000  
-##                                                                      
+<pre><code>##        id           A1_Score         A2_Score         A3_Score    
+##  Min.   :  1.0   Min.   :0.0000   Min.   :0.0000   Min.   :0.000  
+##  1st Qu.:177.5   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.000  
+##  Median :353.0   Median :1.0000   Median :0.0000   Median :0.000  
+##  Mean   :352.9   Mean   :0.7212   Mean   :0.4538   Mean   :0.458  
+##  3rd Qu.:528.5   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.000  
+##  Max.   :704.0   Max.   :1.0000   Max.   :1.0000   Max.   :1.000  
+##                                                                   
+##     A4_Score         A5_Score         A6_Score         A7_Score     
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.0000   Median :0.0000   Median :0.0000  
+##  Mean   :0.4964   Mean   :0.4993   Mean   :0.2845   Mean   :0.4182  
+##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000  
+##                                                                     
 ##     A8_Score         A9_Score        A10_Score           age       
-##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   : 17.0  
-##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.: 21.0  
-##  Median :1.0000   Median :0.0000   Median :1.0000   Median : 27.0  
-##  Mean   :0.6491   Mean   :0.3239   Mean   :0.5739   Mean   : 29.7  
-##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.: 35.0  
-##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :383.0  
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :17.00  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:21.00  
+##  Median :1.0000   Median :0.0000   Median :1.0000   Median :27.00  
+##  Mean   :0.6501   Mean   :0.3243   Mean   :0.5747   Mean   :29.19  
+##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:35.00  
+##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :64.00  
 ##                                                     NA's   :2      
-##  gender            ethnicity   jundice   austim   
-##  f:337   White-European :233   no :635   no :613  
+##  gender            ethnicity   jaundice  autism   
+##  f:336   White-European :233   no :634   no :612  
 ##  m:367   Asian          :123   yes: 69   yes: 91  
 ##          Middle Eastern : 92                      
 ##          Black          : 43                      
 ##          South Asian    : 36                      
-##          (Other)        : 82                      
+##          (Other)        : 81                      
 ##          NA's           : 95                      
-##               contry_of_res used_app_before     result      
-##  United States       :113   no :692         Min.   : 0.000  
+##                  country    used_app_before     result      
+##  United States       :113   no :691         Min.   : 0.000  
 ##  United Arab Emirates: 82   yes: 12         1st Qu.: 3.000  
 ##  India               : 81                   Median : 4.000  
-##  New Zealand         : 81                   Mean   : 4.875  
+##  New Zealand         : 80                   Mean   : 4.881  
 ##  United Kingdom      : 77                   3rd Qu.: 7.000  
 ##  Jordan              : 47                   Max.   :10.000  
 ##  (Other)             :223                                   
-##         age_desc                       relation   Class.ASD      Date    
-##  18 and more:704   Health care professional:  4   NO :515   Min.   :NA   
-##                    Others                  :  5   YES:189   1st Qu.:NA   
-##                    Parent                  : 50             Median :NA   
-##                    Relative                : 28             Mean   :NA   
-##                    Self                    :522             3rd Qu.:NA   
-##                    NA's                    : 95             Max.   :NA   
-##                                                             NA's   :704</code></pre>
-<pre class="r"><code>summary(brisbane.only)</code></pre>
-<pre><code>##        id      Local.Govt.Area    A2_Score      A3_Score      A4_Score  
-##  Min.   : NA   Min.   : NA     Min.   : NA   Min.   : NA   Min.   : NA  
-##  1st Qu.: NA   1st Qu.: NA     1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
-##  Median : NA   Median : NA     Median : NA   Median : NA   Median : NA  
-##  Mean   :NaN   Mean   :NaN     Mean   :NaN   Mean   :NaN   Mean   :NaN  
-##  3rd Qu.: NA   3rd Qu.: NA     3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
-##  Max.   : NA   Max.   : NA     Max.   : NA   Max.   : NA   Max.   : NA  
-##                                                                         
-##     A5_Score   Player.Money.Lost    A7_Score      A8_Score      A9_Score  
-##  Min.   : NA   Min.   : NA       Min.   : NA   Min.   : NA   Min.   : NA  
-##  1st Qu.: NA   1st Qu.: NA       1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
-##  Median : NA   Median : NA       Median : NA   Median : NA   Median : NA  
-##  Mean   :NaN   Mean   :NaN       Mean   :NaN   Mean   :NaN   Mean   :NaN  
-##  3rd Qu.: NA   3rd Qu.: NA       3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
-##  Max.   : NA   Max.   : NA       Max.   : NA   Max.   : NA   Max.   : NA  
-##                                                                           
-##    A10_Score        age      gender           ethnicity jundice austim 
-##  Min.   : NA   Min.   : NA   f:0    Asian          :0   no :0   no :0  
-##  1st Qu.: NA   1st Qu.: NA   m:0    Black          :0   yes:0   yes:0  
-##  Median : NA   Median : NA          Hispanic       :0                  
-##  Mean   :NaN   Mean   :NaN          Latino         :0                  
-##  3rd Qu.: NA   3rd Qu.: NA          Middle Eastern :0                  
-##  Max.   : NA   Max.   : NA          others         :0                  
-##                                     (Other)        :0                  
-##        contry_of_res used_app_before     result           age_desc
-##  Afghanistan  :0     no :0           Min.   : NA   18 and more:0  
-##  AmericanSamoa:0     yes:0           1st Qu.: NA                  
-##  Angola       :0                     Median : NA                  
-##  Argentina    :0                     Mean   :NaN                  
-##  Armenia      :0                     3rd Qu.: NA                  
-##  Aruba        :0                     Max.   : NA                  
-##  (Other)      :0                                                  
-##                      relation Class.ASD      Date   
-##  Health care professional:0   NO :0     Min.   :NA  
-##  Others                  :0   YES:0     1st Qu.:NA  
-##  Parent                  :0             Median :NA  
-##  Relative                :0             Mean   :NA  
-##  Self                    :0             3rd Qu.:NA  
-##                                         Max.   :NA  
+##         age_desc                       relation   Class.ASD
+##  18 and more:703   Health care professional:  4   NO :514  
+##                    Others                  :  5   YES:189  
+##                    Parent                  : 50            
+##                    Relative                : 28            
+##                    Self                    :521            
+##                    NA's                    : 95            
+##                                                            
+##      pids          
+##  Length:703        
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+##                    
 ## </code></pre>
-<pre class="r"><code>summary(brisbane.2010.data)</code></pre>
-<pre><code>##        id      Local.Govt.Area    A2_Score      A3_Score      A4_Score  
-##  Min.   : NA   Min.   : NA     Min.   : NA   Min.   : NA   Min.   : NA  
-##  1st Qu.: NA   1st Qu.: NA     1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
-##  Median : NA   Median : NA     Median : NA   Median : NA   Median : NA  
-##  Mean   :NaN   Mean   :NaN     Mean   :NaN   Mean   :NaN   Mean   :NaN  
-##  3rd Qu.: NA   3rd Qu.: NA     3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
-##  Max.   : NA   Max.   : NA     Max.   : NA   Max.   : NA   Max.   : NA  
-##                                                                         
-##     A5_Score   Player.Money.Lost    A7_Score      A8_Score      A9_Score  
-##  Min.   : NA   Min.   : NA       Min.   : NA   Min.   : NA   Min.   : NA  
-##  1st Qu.: NA   1st Qu.: NA       1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
-##  Median : NA   Median : NA       Median : NA   Median : NA   Median : NA  
-##  Mean   :NaN   Mean   :NaN       Mean   :NaN   Mean   :NaN   Mean   :NaN  
-##  3rd Qu.: NA   3rd Qu.: NA       3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
-##  Max.   : NA   Max.   : NA       Max.   : NA   Max.   : NA   Max.   : NA  
-##                                                                           
-##    A10_Score        age      gender           ethnicity jundice austim 
-##  Min.   : NA   Min.   : NA   f:0    Asian          :0   no :0   no :0  
-##  1st Qu.: NA   1st Qu.: NA   m:0    Black          :0   yes:0   yes:0  
-##  Median : NA   Median : NA          Hispanic       :0                  
-##  Mean   :NaN   Mean   :NaN          Latino         :0                  
-##  3rd Qu.: NA   3rd Qu.: NA          Middle Eastern :0                  
-##  Max.   : NA   Max.   : NA          others         :0                  
-##                                     (Other)        :0                  
-##        contry_of_res used_app_before     result           age_desc
-##  Afghanistan  :0     no :0           Min.   : NA   18 and more:0  
-##  AmericanSamoa:0     yes:0           1st Qu.: NA                  
-##  Angola       :0                     Median : NA                  
-##  Argentina    :0                     Mean   :NaN                  
-##  Armenia      :0                     3rd Qu.: NA                  
-##  Aruba        :0                     Max.   : NA                  
-##  (Other)      :0                                                  
-##                      relation Class.ASD      Date   
-##  Health care professional:0   NO :0     Min.   :NA  
-##  Others                  :0   YES:0     1st Qu.:NA  
-##  Parent                  :0             Median :NA  
-##  Relative                :0             Mean   :NA  
-##  Self                    :0             3rd Qu.:NA  
-##                                         Max.   :NA  
-## </code></pre>
-<p>Use the summary function to return a quick summary of only the money column</p>
-<pre class="r"><code>summary(brisbane.2010.data$Player.Money.Lost)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## </code></pre>
-<p>Get a random selection of data and look at which Local government areas are included</p>
-<pre class="r"><code>random.fifty.rows&lt;-dplyr::sample_n(autism.data,50)
-
-#look at each row's Local Government Area (LGA)
-random.fifty.rows$Local.Govt.Area</code></pre>
-<pre><code>##  [1] 0 1 0 1 0 0 0 0 1 1 1 0 1 0 1 0 0 0 1 1 0 0 1 1 0 1 0 1 1 1 1 1 1 1 0
-## [36] 0 0 1 0 0 1 1 0 1 1 0 1 1 1 0</code></pre>
-<pre class="r"><code>#look at the unique local government areas (duplicates removed)
-unique(random.fifty.rows$Local.Govt.Area)</code></pre>
-<pre><code>## [1] 0 1</code></pre>
-<pre class="r"><code>#look at how many rows there are for each LGA
-table(random.fifty.rows$Local.Govt.Area)</code></pre>
-<pre><code>## 
-##  0  1 
-## 23 27</code></pre>
-<p>Challenge: find which Local government area had the lowest non-zero amount of money lost in a month.</p>
-</div>
-</div>
-<div id="data-types" class="section level2">
-<h2>Data Types</h2>
-<p>There are several different types of data you can use in R, and you can even make your own new <em>types</em> (but we won’t touch on that today). Now we will examine a few common ones in a little more detail.</p>
-<div id="strings" class="section level3">
-<h3>Strings</h3>
-<p>Character strings are known as “character” in R:</p>
-<pre class="r"><code>autism.data$Local.Govt.Area[3]</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre class="r"><code>class(autism.data$Local.Govt.Area)</code></pre>
+<p>Use the summary function to return a quick summary of only the country column</p>
+<pre class="r"><code>summary(autism.data$country)</code></pre>
+<pre><code>##          Afghanistan        AmericanSamoa               Angola 
+##                   13                    2                    1 
+##            Argentina              Armenia                Aruba 
+##                    2                    2                    1 
+##            Australia              Austria           Azerbaijan 
+##                   27                    4                    1 
+##              Bahamas           Bangladesh              Belgium 
+##                    2                    3                    3 
+##              Bolivia               Brazil              Burundi 
+##                    1                    9                    1 
+##               Canada                Chile                China 
+##                   15                    1                    1 
+##           Costa Rica               Cyprus       Czech Republic 
+##                    1                    1                    1 
+##              Ecuador                Egypt             Ethiopia 
+##                    1                    3                    2 
+##              Finland               France              Germany 
+##                    1                   11                    4 
+##            Hong Kong              Iceland                India 
+##                    1                    2                   81 
+##            Indonesia                 Iran                 Iraq 
+##                    1                    7                    1 
+##              Ireland                Italy                Japan 
+##                    5                    5                    1 
+##               Jordan           Kazakhstan              Lebanon 
+##                   47                    3                    1 
+##             Malaysia               Mexico                Nepal 
+##                    5                    8                    1 
+##          Netherlands          New Zealand            Nicaragua 
+##                   10                   80                    1 
+##                Niger                 Oman             Pakistan 
+##                    1                    1                    3 
+##          Philippines             Portugal              Romania 
+##                    4                    1                    3 
+##               Russia         Saudi Arabia               Serbia 
+##                    7                    4                    1 
+##         Sierra Leone         South Africa                Spain 
+##                    1                    2                    3 
+##            Sri Lanka               Sweden                Tonga 
+##                   14                    2                    1 
+##               Turkey              Ukraine United Arab Emirates 
+##                    1                    2                   82 
+##       United Kingdom        United States              Uruguay 
+##                   77                  113                    1 
+##             Viet Nam 
+##                    5</code></pre>
+<p>Why does the summary function give you quartiles for some column and provide counts for others? Remember that data frames are 2D collections that can hold data of different types</p>
+<pre class="r"><code>class(autism.data$age)</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
-</div>
-<div id="numbers" class="section level3">
-<h3>Numbers</h3>
-<p>Numbers have different classes, they can be integer:</p>
-<pre class="r"><code>autism.data$Operational.EGMs[36]</code></pre>
-<pre><code>## NULL</code></pre>
-<pre class="r"><code>class(autism.data$Operational.EGMs)</code></pre>
-<pre><code>## [1] &quot;NULL&quot;</code></pre>
-<p>They can be numeric:</p>
-<pre class="r"><code>autism.data$Player.Money.Lost[84]</code></pre>
-<pre><code>## [1] 0</code></pre>
-<pre class="r"><code>class(autism.data$Player.Money.Lost)</code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
-<pre class="r"><code>class(0.1)</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
-<pre class="r"><code>class(pi)</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
-<p>They can be complex:</p>
-<pre class="r"><code>class(1i+3)</code></pre>
-<pre><code>## [1] &quot;complex&quot;</code></pre>
-<p>They can be double:</p>
-<pre class="r"><code>x&lt;-as.double(3.345678987654323456789)</code></pre>
-<p>They can have rounding errors</p>
-<pre class="r"><code>x-(x-0.0000000000001)</code></pre>
-<pre><code>## [1] 9.992007e-14</code></pre>
-</div>
-<div id="logical-truefalse" class="section level3">
-<h3>Logical (True/False)</h3>
-<pre class="r"><code>class(TRUE)</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-<pre class="r"><code>class(1==1)</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-</div>
-<div id="factor" class="section level3">
-<h3>Factor</h3>
-<p>A factor is a string label on top of an integer index</p>
-<pre class="r"><code>as.factor(&quot;I am a label&quot;)</code></pre>
-<pre><code>## [1] I am a label
-## Levels: I am a label</code></pre>
-<p>This makes most sense in the context of a survey response, e.g. 1=Good, 2, 3=Average, 4, 5=Bad; or something like that. For example in the simple data we had at the beginning, gender is a factor.</p>
-<pre class="r"><code>class(bmc.data$gender)</code></pre>
+<pre class="r"><code>summary(autism.data$age)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   17.00   21.00   27.00   29.19   35.00   64.00       2</code></pre>
+<pre class="r"><code>class(autism.data$country)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
-<pre class="r"><code>bmc.data$gender</code></pre>
-<pre><code>## [1] Female Male   Female Male  
-## Levels: Female Male</code></pre>
-<pre class="r"><code>as.numeric(bmc.data$gender)</code></pre>
-<pre><code>## [1] 1 2 1 2</code></pre>
-<pre class="r"><code>table(bmc.data$gender)</code></pre>
+<pre class="r"><code>summary(autism.data$country)</code></pre>
+<pre><code>##          Afghanistan        AmericanSamoa               Angola 
+##                   13                    2                    1 
+##            Argentina              Armenia                Aruba 
+##                    2                    2                    1 
+##            Australia              Austria           Azerbaijan 
+##                   27                    4                    1 
+##              Bahamas           Bangladesh              Belgium 
+##                    2                    3                    3 
+##              Bolivia               Brazil              Burundi 
+##                    1                    9                    1 
+##               Canada                Chile                China 
+##                   15                    1                    1 
+##           Costa Rica               Cyprus       Czech Republic 
+##                    1                    1                    1 
+##              Ecuador                Egypt             Ethiopia 
+##                    1                    3                    2 
+##              Finland               France              Germany 
+##                    1                   11                    4 
+##            Hong Kong              Iceland                India 
+##                    1                    2                   81 
+##            Indonesia                 Iran                 Iraq 
+##                    1                    7                    1 
+##              Ireland                Italy                Japan 
+##                    5                    5                    1 
+##               Jordan           Kazakhstan              Lebanon 
+##                   47                    3                    1 
+##             Malaysia               Mexico                Nepal 
+##                    5                    8                    1 
+##          Netherlands          New Zealand            Nicaragua 
+##                   10                   80                    1 
+##                Niger                 Oman             Pakistan 
+##                    1                    1                    3 
+##          Philippines             Portugal              Romania 
+##                    4                    1                    3 
+##               Russia         Saudi Arabia               Serbia 
+##                    7                    4                    1 
+##         Sierra Leone         South Africa                Spain 
+##                    1                    2                    3 
+##            Sri Lanka               Sweden                Tonga 
+##                   14                    2                    1 
+##               Turkey              Ukraine United Arab Emirates 
+##                    1                    2                   82 
+##       United Kingdom        United States              Uruguay 
+##                   77                  113                    1 
+##             Viet Nam 
+##                    5</code></pre>
+<p>Another way to summarise a <code>factor</code> column is to use the <code>table()</code> function</p>
+<pre class="r"><code>table(autism.data$country)</code></pre>
 <pre><code>## 
-## Female   Male 
-##      2      2</code></pre>
+##          Afghanistan        AmericanSamoa               Angola 
+##                   13                    2                    1 
+##            Argentina              Armenia                Aruba 
+##                    2                    2                    1 
+##            Australia              Austria           Azerbaijan 
+##                   27                    4                    1 
+##              Bahamas           Bangladesh              Belgium 
+##                    2                    3                    3 
+##              Bolivia               Brazil              Burundi 
+##                    1                    9                    1 
+##               Canada                Chile                China 
+##                   15                    1                    1 
+##           Costa Rica               Cyprus       Czech Republic 
+##                    1                    1                    1 
+##              Ecuador                Egypt             Ethiopia 
+##                    1                    3                    2 
+##              Finland               France              Germany 
+##                    1                   11                    4 
+##            Hong Kong              Iceland                India 
+##                    1                    2                   81 
+##            Indonesia                 Iran                 Iraq 
+##                    1                    7                    1 
+##              Ireland                Italy                Japan 
+##                    5                    5                    1 
+##               Jordan           Kazakhstan              Lebanon 
+##                   47                    3                    1 
+##             Malaysia               Mexico                Nepal 
+##                    5                    8                    1 
+##          Netherlands          New Zealand            Nicaragua 
+##                   10                   80                    1 
+##                Niger                 Oman             Pakistan 
+##                    1                    1                    3 
+##          Philippines             Portugal              Romania 
+##                    4                    1                    3 
+##               Russia         Saudi Arabia               Serbia 
+##                    7                    4                    1 
+##         Sierra Leone         South Africa                Spain 
+##                    1                    2                    3 
+##            Sri Lanka               Sweden                Tonga 
+##                   14                    2                    1 
+##               Turkey              Ukraine United Arab Emirates 
+##                    1                    2                   82 
+##       United Kingdom        United States              Uruguay 
+##                   77                  113                    1 
+##             Viet Nam 
+##                    5</code></pre>
+<p>A difference between using the <code>summary()</code> function over the <code>table()</code> function for factors is that by default, the <code>summary()</code> function also counts <code>NA</code> values whereas in this must be specified for <code>table()</code></p>
+<pre class="r"><code>summary(autism.data$ethnicity)</code></pre>
+<pre><code>##           Asian           Black        Hispanic          Latino 
+##             123              43              13              20 
+## Middle Eastern           others          Others        Pasifika 
+##              92               1              30              11 
+##     South Asian         Turkish  White-European            NA's 
+##              36               6             233              95</code></pre>
+<pre class="r"><code>table(autism.data$ethnicity)</code></pre>
+<pre><code>## 
+##           Asian           Black        Hispanic          Latino 
+##             123              43              13              20 
+## Middle Eastern           others          Others        Pasifika 
+##              92               1              30              11 
+##     South Asian         Turkish  White-European 
+##              36               6             233</code></pre>
+<pre class="r"><code>table(autism.data$ethnicity, useNA = &quot;ifany&quot;)</code></pre>
+<pre><code>## 
+##           Asian           Black        Hispanic          Latino 
+##             123              43              13              20 
+## Middle Eastern           others          Others        Pasifika 
+##              92               1              30              11 
+##     South Asian         Turkish  White-European            &lt;NA&gt; 
+##              36               6             233              95</code></pre>
 </div>
-<div id="vectors-and-lists" class="section level3">
-<h3>Vectors and Lists</h3>
-<p>Vectors are all of the same class</p>
-<pre class="r"><code>#a vector
-c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;)</code></pre>
-<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
-<pre class="r"><code>#another vector
-c(1,4,7)</code></pre>
-<pre><code>## [1] 1 4 7</code></pre>
-<p>If you try to put different classes of things into a vector it will try to convert them to the same class.</p>
-<pre class="r"><code>#this will be converted to a vector of character strings
-(what.am.I&lt;-c(&quot;a&quot;,2,&quot;c&quot;,FALSE,c(1,2,3)))</code></pre>
-<pre><code>## [1] &quot;a&quot;     &quot;2&quot;     &quot;c&quot;     &quot;FALSE&quot; &quot;1&quot;     &quot;2&quot;     &quot;3&quot;</code></pre>
-<pre class="r"><code>class(what.am.I)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<p>Lists can contain different classes of things in each element, possibly of different lengths</p>
-<pre class="r"><code>#a list
-list(&quot;a&quot;,2,&quot;c&quot;,FALSE,c(1,2,3))</code></pre>
-<pre><code>## [[1]]
-## [1] &quot;a&quot;
-## 
-## [[2]]
-## [1] 2
-## 
-## [[3]]
-## [1] &quot;c&quot;
-## 
-## [[4]]
-## [1] FALSE
-## 
-## [[5]]
-## [1] 1 2 3</code></pre>
-</div>
-<div id="data-frames-1" class="section level3">
-<h3>Data frames</h3>
-<p>Data frames are really a list of vectors of equal length, and they function like a table of data. We made one right at the beginning:</p>
-<pre class="r"><code>bmc.data&lt;-data.frame(first.name=c(&quot;Alice&quot;,
-                                     &quot;Bob&quot;,
-                                     &quot;Cathy&quot;,
-                                     &quot;Daniel&quot;),
-                        gender=as.factor(c(&quot;Female&quot;,
-                                           &quot;Male&quot;,
-                                           &quot;Female&quot;,
-                                           &quot;Male&quot;)),
-                        favourite.number=c(4,23,pi,exp(1)),
-                        favourite.letter=c(&quot;a&quot;,&quot;c&quot;,&quot;x&quot;,&quot;q&quot;),
-                        favourite.weekday=c(&quot;Monday&quot;,&quot;Thursday&quot;,&quot;Sunday&quot;,&quot;Friday&quot;),
-                        stringsAsFactors = FALSE)</code></pre>
-<ul>
-<li><p>We made a column called “first.name”, a vector of character strings (favourite.letter and favourite.weekday are also character strings)</p></li>
-<li><p>We made a column called “gender”, a vector of factors</p></li>
-<li><p>We made a column called “favourite.number”, a vector of class numeric</p></li>
-<li><p>Lastly we told it to not convert all the character string colums into factors (which is something it does by default) by adding the optional argument <code>stringsAsFactors = FALSE</code> to the <code>data.frame()</code> function.</p></li>
-</ul>
-</div>
-<div id="adding-records" class="section level3">
-<h3>Adding records</h3>
-<p>Add a new row to the data set using the rbind() function:</p>
-<pre class="r"><code>new.person &lt;- data.frame(first.name=&quot;Evelyn&quot;,
-                        gender=&quot;Female&quot;,
-                        favourite.number=12,
-                        favourite.letter=&quot;z&quot;,
-                        favourite.weekday=&quot;Monday&quot;,
-                        stringsAsFactors = FALSE)
-
-bmc.data&lt;-rbind(bmc.data,new.person)</code></pre>
+<div id="quiz-1" class="section level3">
+<h3>Quiz</h3>
+<ol style="list-style-type: decimal">
+<li><p>What is the proportions to males to females in this dataset?</p></li>
+<li><p>Return those participants whose <code>gender</code> is female</p></li>
+<li><p>Return those participants whose <code>gender</code> is female into a new data frame called “females.autism.data”</p></li>
+<li><p>What is the mean <code>result</code> score for those classified as ASD</p></li>
+<li><p>What is the mean <code>result</code> score for those not classified as ASD</p></li>
+</ol>
 </div>
 </div>
-<div id="writing-data" class="section level2">
-<h2>Writing Data</h2>
-<p>Use the write.table() function to make the datafile a text file</p>
+<div id="writing-the-data-out" class="section level2">
+<h2>Writing the data out</h2>
+<p>Use the write.table() function to make the data file a text file</p>
 <pre class="r"><code>write.table(x = bmc.data,
-            file = &quot;simpleData.txt&quot;,
+            file = &quot;bmcdata.txt&quot;,
             row.names = FALSE,
             col.names = TRUE,
             sep = &quot;,&quot;)</code></pre>
 <p>Use the write.csv() function to make the datafile a csv (comma separated values) file</p>
 <pre class="r"><code>write.csv(x = bmc.data,
-          file = &quot;simpleData.csv&quot;,
+          file = &quot;bmcdata.csv&quot;,
           row.names = FALSE)</code></pre>
-<p>Use the write.xlsx</p>
 </div>
 
 
