@@ -170,6 +170,11 @@ make part of the course this won't impact your learning.</p>
 	  </center>
   </div>
 </div>
+{% if page.collaborative_notes %}
+<p id="collaborative_notes">
+  We will use this <a href="{{page.collaborative_notes}}">collaborative document for Day 1</a> for chatting, taking notes, and sharing URLs and bits of code.
+</p>
+{% endif %}
 
 <div class="row">
   <div class="col-md-6">
@@ -183,6 +188,11 @@ make part of the course this won't impact your learning.</p>
 	  </center>
   </div>
 </div>
+{% if page.collaborative_notes %}
+<p id="collaborative_notes">
+  We will use this <a href="{{page.collaborative_notes}}">collaborative document for Day 2</a> for chatting, taking notes, and sharing URLs and bits of code.
+</p>
+{% endif %}
 
 <div class="row">
   <div class="col-md-6">
@@ -195,6 +205,11 @@ make part of the course this won't impact your learning.</p>
 	  </center>
   </div>
 </div>
+{% if page.collaborative_notes %}
+<p id="collaborative_notes">
+  We will use this <a href="{{page.collaborative_notes}}">collaborative document for Day 3</a> for chatting, taking notes, and sharing URLs and bits of code.
+</p>
+{% endif %}
 
 <!--
   Collaborative Notes
@@ -206,11 +221,7 @@ make part of the course this won't impact your learning.</p>
   where 'YYYY-MM-DD-site' is the identifier for your workshop,
   e.g., '2015-06-10-esu'.
 -->
-{% if page.collaborative_notes %}
-<p id="collaborative_notes">
-  We will use this <a href="{{page.collaborative_notes}}">collaborative document</a> for chatting, taking notes, and sharing URLs and bits of code.
-</p>
-{% endif %}
+
 
 <hr/>
 
