@@ -339,6 +339,8 @@ First we'll step into one of the most popular tidyverse package called [dplyr](h
 
 ## dpylr
 
+![dplyr](hex-dplyr.jpg)
+
 `dpylr` allows you to perform some of the most common data manipulation tasks you'll encounter in R. The background of the `dplyr` package is that it is a "grammar" of data manipulation and that its functions are a set of verbs.
 
 ### select()
