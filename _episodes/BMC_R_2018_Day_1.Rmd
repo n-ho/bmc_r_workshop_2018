@@ -139,7 +139,7 @@ myvariable
 
 myvariable^2
 ```
-## Variable Types
+## Variable and DataTypes
 
 There are several different types of data you can use in R. We'll examine a few common ones in a little more detail.
 
@@ -242,7 +242,7 @@ min(myorderedfactor)
 
 
 
-### Data frames
+### Working with data
 
 A lot of the time in R, we are working with tables of data, know as "data frames". 
 
@@ -379,7 +379,7 @@ bmc.data <- rbind(bmc.data, new.person)
 
 
 
-## More Realistic Data
+## Working with more realistic Data
 
 The dataset that we will be using today is taken from University of California, Irvine's Machine Learning Repository. We will be examining the [Autism Screening Adult Data Set](https://archive.ics.uci.edu/ml/datasets/Autism+Screening+Adult). This is data collected by Dr Fadi Fayez Thabtah at NMIT via the mobile app ASD Tests.
 
