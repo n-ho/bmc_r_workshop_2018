@@ -703,6 +703,191 @@ add(2, 5)</code></pre>
 <pre><code>## [1] 29.19401</code></pre>
 </div>
 </div>
+<div id="data-wrangling" class="section level2">
+<h2>Data wrangling</h2>
+<p>So far, we’ve been using R’s base functions to perform our data wrangling and manipulation. I would highly encourage you to learn to use the <a href="https://www.tidyverse.org/">tidyverse</a> collection of data wrangling and visualisation tools. These are excellent tools that allows you to write elegent, legible code that gets your data into the right shape prior to analysis.</p>
+<pre class="r"><code># load tidyverse
+library(tidyverse)</code></pre>
+<pre><code>## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr</code></pre>
+<pre><code>## Warning: package 'ggplot2' was built under R version 3.4.4</code></pre>
+<pre><code>## Warning: package 'tibble' was built under R version 3.4.3</code></pre>
+<pre><code>## Warning: package 'purrr' was built under R version 3.4.4</code></pre>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.4.4</code></pre>
+<pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
+<pre><code>## filter(): dplyr, stats
+## lag():    dplyr, stats</code></pre>
+<p>First we’ll step into one of the most popular tidyverse package called <a href="https://dplyr.tidyverse.org/">dplyr</a>.</p>
+</div>
+<div id="dpylr" class="section level2">
+<h2>dpylr</h2>
+<p><code>dpylr</code> allows you to perform some of the most common data manipulation tasks you’ll encounter in R. The background of the <code>dplyr</code> package is that it is a “grammar” of data manipulation and that its functions are a set of verbs.</p>
+<div id="select" class="section level3">
+<h3>select()</h3>
+<p>The <code>select()</code> function allows you to pick or remove variables based on their names. Note that you do not use <code>&quot;</code> nor <code>'</code> to wrap the column names as you would with a base R function</p>
+<pre class="r"><code># select just the age, gender and result columns from autism.data
+selected.autism.data &lt;- select(autism.data, age, gender, result)
+head(selected.autism.data)</code></pre>
+<pre><code>##   age gender result
+## 1  26      f      6
+## 2  24      m      5
+## 3  27      m      8
+## 4  35      f      6
+## 5  40      f      2
+## 6  36      m      9</code></pre>
+<pre class="r"><code># select all columns except for ethnicity and country
+selected.autism.data &lt;- select(autism.data, -ethnicity, -country)
+head(selected.autism.data)</code></pre>
+<pre><code>##   id A1_Score A2_Score A3_Score A4_Score A5_Score A6_Score A7_Score
+## 1  1        1        1        1        1        0        0        1
+## 2  2        1        1        0        1        0        0        0
+## 3  3        1        1        0        1        1        0        1
+## 4  4        1        1        0        1        0        0        1
+## 5  5        1        0        0        0        0        0        0
+## 6  6        1        1        1        1        1        0        1
+##   A8_Score A9_Score A10_Score age gender jaundice autism used_app_before
+## 1        1        0         0  26      f       no     no              no
+## 2        1        0         1  24      m       no    yes              no
+## 3        1        1         1  27      m      yes    yes              no
+## 4        1        0         1  35      f       no    yes              no
+## 5        1        0         0  40      f       no     no              no
+## 6        1        1         1  36      m      yes     no              no
+##   result    age_desc relation Class.ASD        pids
+## 1      6 18 and more     Self        NO PatientID_1
+## 2      5 18 and more     Self        NO PatientID_2
+## 3      8 18 and more   Parent       YES PatientID_3
+## 4      6 18 and more     Self        NO PatientID_4
+## 5      2 18 and more     &lt;NA&gt;        NO PatientID_5
+## 6      9 18 and more     Self       YES PatientID_6</code></pre>
+<p>The tidyverse allows you to pipe functions together to create a chain to data manipulations. This allows you to redirect the output of one function into another one. Those familiar with bash or *nix will be familiar with piping with <code>|</code>. Here, we use <code>%&gt;%</code> to pipe.</p>
+<pre class="r"><code>autism.data %&gt;% select(age, gender, result) %&gt;% head()</code></pre>
+<pre><code>##   age gender result
+## 1  26      f      6
+## 2  24      m      5
+## 3  27      m      8
+## 4  35      f      6
+## 5  40      f      2
+## 6  36      m      9</code></pre>
+<p>Or let’s make this more legible</p>
+<pre class="r"><code>autism.data %&gt;% 
+  select(age, gender, result) %&gt;% 
+  head()</code></pre>
+<pre><code>##   age gender result
+## 1  26      f      6
+## 2  24      m      5
+## 3  27      m      8
+## 4  35      f      6
+## 5  40      f      2
+## 6  36      m      9</code></pre>
+<p>Redirect the output of this chain of pipes into a new dataframe</p>
+<pre class="r"><code>autism.data %&gt;% 
+  select(age, gender, result) -&gt; selected.autism.data</code></pre>
+</div>
+<div id="filter" class="section level3">
+<h3>filter()</h3>
+<p>The <code>filter()</code> function allows you to filter rows of your dataset that match some condition</p>
+<pre class="r"><code>autism.data %&gt;% 
+  filter(age == 17) %&gt;% 
+  head()</code></pre>
+<pre><code>## Warning: package 'bindrcpp' was built under R version 3.4.4</code></pre>
+<pre><code>##   id A1_Score A2_Score A3_Score A4_Score A5_Score A6_Score A7_Score
+## 1  7        0        1        0        0        0        0        0
+## 2 10        1        1        1        1        0        1        1
+## 3 13        0        1        1        1        1        1        0
+## 4 14        1        0        0        0        0        0        1
+## 5 15        1        0        0        0        0        0        1
+## 6 85        1        1        0        0        0        0        0
+##   A8_Score A9_Score A10_Score age gender      ethnicity jaundice autism
+## 1        1        0         0  17      f          Black       no     no
+## 2        1        1         0  17      m          Asian      yes    yes
+## 3        0        1         0  17      f           &lt;NA&gt;       no     no
+## 4        1        0         1  17      m           &lt;NA&gt;       no     no
+## 5        1        0         1  17      f           &lt;NA&gt;       no     no
+## 6        0        0         0  17      f White-European       no     no
+##         country used_app_before result    age_desc
+## 1 United States              no      2 18 and more
+## 2       Bahamas              no      8 18 and more
+## 3       Bahamas              no      6 18 and more
+## 4       Austria              no      4 18 and more
+## 5     Argentina              no      4 18 and more
+## 6   New Zealand              no      2 18 and more
+##                   relation Class.ASD         pids
+## 1                     Self        NO  PatientID_7
+## 2 Health care professional       YES PatientID_10
+## 3                     &lt;NA&gt;        NO PatientID_13
+## 4                     &lt;NA&gt;        NO PatientID_14
+## 5                     &lt;NA&gt;        NO PatientID_15
+## 6                     Self        NO PatientID_85</code></pre>
+<p>Combine this with the <code>select()</code> function to select only the age, gender and country of the 17 year olds in the autism dataset</p>
+<pre class="r"><code>autism.data %&gt;% 
+  filter(age == 17) %&gt;% 
+  select(age, gender, country) %&gt;%
+  head()</code></pre>
+<pre><code>##   age gender       country
+## 1  17      f United States
+## 2  17      m       Bahamas
+## 3  17      f       Bahamas
+## 4  17      m       Austria
+## 5  17      f     Argentina
+## 6  17      f   New Zealand</code></pre>
+<p>You can combine this with some of R’s base functions (as we did with the <code>head()</code> function). What are the counts for countries of the 17 year olds in the autism dataset</p>
+<pre class="r"><code>autism.data %&gt;% 
+  filter(age == 17) %&gt;% 
+  select(country) %&gt;%
+  table()</code></pre>
+<pre><code>## .
+##          Afghanistan        AmericanSamoa               Angola 
+##                    0                    0                    0 
+##            Argentina              Armenia                Aruba 
+##                    1                    0                    0 
+##            Australia              Austria           Azerbaijan 
+##                    0                    1                    0 
+##              Bahamas           Bangladesh              Belgium 
+##                    2                    0                    0 
+##              Bolivia               Brazil              Burundi 
+##                    0                    0                    0 
+##               Canada                Chile                China 
+##                    1                    0                    0 
+##           Costa Rica               Cyprus       Czech Republic 
+##                    0                    0                    0 
+##              Ecuador                Egypt             Ethiopia 
+##                    0                    0                    0 
+##              Finland               France              Germany 
+##                    0                    0                    0 
+##            Hong Kong              Iceland                India 
+##                    0                    0                    1 
+##            Indonesia                 Iran                 Iraq 
+##                    0                    0                    0 
+##              Ireland                Italy                Japan 
+##                    0                    0                    0 
+##               Jordan           Kazakhstan              Lebanon 
+##                    0                    0                    0 
+##             Malaysia               Mexico                Nepal 
+##                    0                    0                    0 
+##          Netherlands          New Zealand            Nicaragua 
+##                    1                    4                    0 
+##                Niger                 Oman             Pakistan 
+##                    0                    0                    0 
+##          Philippines             Portugal              Romania 
+##                    0                    0                    1 
+##               Russia         Saudi Arabia               Serbia 
+##                    0                    0                    0 
+##         Sierra Leone         South Africa                Spain 
+##                    0                    0                    0 
+##            Sri Lanka               Sweden                Tonga 
+##                    0                    0                    0 
+##               Turkey              Ukraine United Arab Emirates 
+##                    0                    0                    1 
+##       United Kingdom        United States              Uruguay 
+##                    1                    4                    0 
+##             Viet Nam 
+##                    0</code></pre>
+</div>
+</div>
 
 
 

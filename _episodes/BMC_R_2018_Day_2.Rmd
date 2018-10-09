@@ -319,3 +319,83 @@ mean(autism.data$age, na.rm = TRUE)
 ```
 
 
+
+
+
+
+
+
+## Data wrangling
+
+
+So far, we've been using R's base functions to perform our data wrangling and manipulation. I would highly encourage you to learn to use the [tidyverse](https://www.tidyverse.org/) collection of data wrangling and visualisation tools. These are excellent tools that allows you to write elegent, legible code that gets your data into the right shape prior to analysis.
+
+```{r}
+# load tidyverse
+library(tidyverse)
+```
+
+First we'll step into one of the most popular tidyverse package called [dplyr](https://dplyr.tidyverse.org/). 
+
+## dpylr
+
+`dpylr` allows you to perform some of the most common data manipulation tasks you'll encounter in R. The background of the `dplyr` package is that it is a "grammar" of data manipulation and that its functions are a set of verbs.
+
+### select()
+The `select()` function allows you to pick or remove variables based on their names. Note that you do not use `"` nor `'` to wrap the column names as you would with a base R function
+
+```{r}
+# select just the age, gender and result columns from autism.data
+selected.autism.data <- select(autism.data, age, gender, result)
+head(selected.autism.data)
+
+# select all columns except for ethnicity and country
+selected.autism.data <- select(autism.data, -ethnicity, -country)
+head(selected.autism.data)
+```
+
+The tidyverse allows you to pipe functions together to create a chain to data manipulations. This allows you to redirect the output of one function into another one. Those familiar with bash or *nix will be familiar with piping with `|`. Here, we use `%>%` to pipe.
+
+```{r}
+autism.data %>% select(age, gender, result) %>% head()
+```
+
+Or let's make this more legible
+```{r}
+autism.data %>% 
+  select(age, gender, result) %>% 
+  head()
+```
+
+Redirect the output of this chain of pipes into a new dataframe
+```{r}
+autism.data %>% 
+  select(age, gender, result) -> selected.autism.data
+```
+
+
+### filter()
+The `filter()` function allows you to filter rows of your dataset that match some condition
+```{r}
+autism.data %>% 
+  filter(age == 17) %>% 
+  head()
+```
+
+Combine this with the `select()` function to select only the age, gender and country of the 17 year olds in the autism dataset
+```{r}
+autism.data %>% 
+  filter(age == 17) %>% 
+  select(age, gender, country) %>%
+  head()
+```
+
+You can combine this with some of R's base functions (as we did with the `head()` function). What are the counts for countries of the 17 year olds in the autism dataset
+```{r}
+autism.data %>% 
+  filter(age == 17) %>% 
+  select(country) %>%
+  table()
+```
+
+
