@@ -790,7 +790,8 @@ max(autism.data$age, na.rm = TRUE)</code></pre>
 <pre><code>## [1] 383</code></pre>
 <pre class="r"><code>which.max(autism.data$age)</code></pre>
 <pre><code>## [1] 53</code></pre>
-<p>Someone is apparently 383 years old! Let’s remove this person. To do so, we’ll use the <code>-</code> sign in front of the indices we want.</p>
+<p>Someone is apparently 383 years old! There are a number of possibilities why this value is here with a range of probabilities from the most likely (the participant made a typo) to the least (the participant is yoda).</p>
+<p>For our purposes, let’s remove this person. To do so, we’ll use the <code>-</code> sign in front of the indices we want.</p>
 <pre class="r"><code>autism.data &lt;- autism.data[-which.max(autism.data$age), ]</code></pre>
 <p>Who is the youngest person in this dataset and how old are they?</p>
 <pre class="r"><code>min(autism.data$age, na.rm = TRUE)</code></pre>
