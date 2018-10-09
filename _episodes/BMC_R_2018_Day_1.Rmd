@@ -1,7 +1,7 @@
 ---
 title: "Brain & Mind Centre - Introduction into R Workshop"
 subtitle: "Day 1"
-author: "Nicholas Ho, Richar Morris"
+author: "Nicholas Ho, Richard Morris"
 output:
   html_document:
     toc: true
