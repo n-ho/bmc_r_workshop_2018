@@ -3,7 +3,8 @@
 This repository is an update of the Introduction into R workshop developed by Sydney Informatics Hub and the Brain and Mind Centre from 2017. 
 
 ## Authors:
-Gordon McDonald, Darya Vanichkina, Madhura Killedar, Nicholas Ho
+2017 repo: Gordon McDonald, Anushi Shah and Nicholas Ho
+2018 repo: Nicholas Ho
 
 
 ## Original git repo from 2017
