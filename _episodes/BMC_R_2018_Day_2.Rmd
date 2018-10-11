@@ -330,7 +330,7 @@ mean(autism.data$age, na.rm = TRUE)
 
 So far, we've been using R's base functions to perform our data wrangling and manipulation. I would highly encourage you to learn to use the [tidyverse](https://www.tidyverse.org/) collection of data wrangling and visualisation tools. These are excellent tools that allows you to write elegent, legible code that gets your data into the right shape prior to analysis.
 
-```{r}
+```{r, warning=FALSE}
 # load tidyverse
 library(tidyverse)
 ```
@@ -400,4 +400,29 @@ autism.data %>%
   table()
 ```
 
+
+
+### mutate()
+The `mutate()` function adds new columns for your data set
+```{r}
+autism.data %>%
+  mutate(result_squared = result^2) %>%
+  head()
+```
+
+You can also use `mutate()` to remove or edit existing columns
+```{r}
+autism.data %>%
+  mutate(age_desc = NULL, #remove column
+         result = result + 1, # edit existing column
+         agerank = rank(age)) %>% # add column
+  head()
+```
+
+You can use the `transmute()` function to keep only the column you created
+```{r}
+autism.data %>%
+  transmute(agerank = rank(age)) %>% 
+  head()
+```
 
