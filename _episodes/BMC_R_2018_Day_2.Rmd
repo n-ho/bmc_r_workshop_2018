@@ -335,13 +335,26 @@ So far, we've been using R's base functions to perform our data wrangling and ma
 library(tidyverse)
 ```
 
-First we'll step into one of the most popular tidyverse package called [dplyr](https://dplyr.tidyverse.org/). 
+
+## haven
+haven is a package within the tidyverse that allows you to read in data from different sources. For example, if our autism dataset was saved as an .sav file (SPSS), we can use `haven` to read that in.
+
+```{r, warning=FALSE}
+# load haven
+library(haven)
+autism.data.spss <- read_spss("autism_data.sav")
+```
+
+
+Next, we'll step into one of the most popular tidyverse package called [dplyr](https://dplyr.tidyverse.org/). 
 
 ## dpylr
 
 ![dplyr](hex-dplyr.jpg)
 
 `dpylr` allows you to perform some of the most common data manipulation tasks you'll encounter in R. The background of the `dplyr` package is that it is a "grammar" of data manipulation and that its functions are a set of verbs.
+
+You will also notice that the spelling follows British spelling rather than American (Hadley Wickham, author and maintainer of the tidyverse, is from New Zealand), but they can actually be used interchangeably. For example, `summarise()` and `summarize()` perform the same function. 
 
 ### select()
 The `select()` function allows you to pick or remove variables based on their names. Note that you do not use `"` nor `'` to wrap the column names as you would with a base R function
@@ -357,6 +370,8 @@ head(selected.autism.data)
 ```
 
 The tidyverse allows you to pipe functions together to create a chain to data manipulations. This allows you to redirect the output of one function into another one. Those familiar with bash or *nix will be familiar with piping with `|`. Here, we use `%>%` to pipe.
+
+This makes each step discrete and helps immensely with readability
 
 ```{r}
 autism.data %>% select(age, gender, result) %>% head()
@@ -377,7 +392,7 @@ autism.data %>%
 
 
 ### filter()
-The `filter()` function allows you to filter rows of your dataset that match some condition
+The `filter()` function allows you to filter rows of your dataset that match some condition. We can also combine this with some of R' base functions. Here, we'll use `head()` to restrict the output number of rows
 ```{r}
 autism.data %>% 
   filter(age == 17) %>% 
@@ -392,7 +407,7 @@ autism.data %>%
   head()
 ```
 
-You can combine this with some of R's base functions (as we did with the `head()` function). What are the counts for countries of the 17 year olds in the autism dataset
+What are the counts for countries of the 17 year olds in the autism dataset
 ```{r}
 autism.data %>% 
   filter(age == 17) %>% 
@@ -400,7 +415,13 @@ autism.data %>%
   table()
 ```
 
-
+### arrange()
+The `arrange()` function allows you to reorder the rows of your dataset
+```{r}
+autism.data %>% 
+  arrange(age) %>% 
+  head()
+```
 
 ### mutate()
 The `mutate()` function adds new columns for your data set
@@ -424,5 +445,44 @@ You can use the `transmute()` function to keep only the column you created
 autism.data %>%
   transmute(agerank = rank(age)) %>% 
   head()
+```
+
+
+### summarise() and group_by()
+The `summarise()` function reduces down multiple values into one summary statistic. To do so, we need to tell R which groups we're interested in summarising our data into. To do so, we need to use the `group_by()` function prior to calling `summarise()`
+```{r}
+autism.data %>%
+  group_by(Class.ASD) %>%
+  summarise(meanage = mean(age, na.rm = TRUE),
+            count = n())
+```
+
+You can group by more than one variable
+```{r}
+autism.data %>%
+  group_by(Class.ASD, gender) %>%
+  summarise(mean.age = mean(age, na.rm = TRUE),
+            max.age = max(age, na.rm = TRUE),
+            min.age = min(age, na.rm = TRUE),
+            count = n())
+```
+
+## Quiz
+
+1. Create a summary table for mean `result` for a grouping by gender, autism class and family history of autism
+```{r, eval = FALSE}
+autism.data %>%
+  
+  # your code here
+  
+```
+
+
+2. (Intermediate) Do the same as above and now arrange from the lowest mean `result` to the highest
+```{r, eval = FALSE}
+autism.data %>%
+  
+  # your code here
+  
 ```
 

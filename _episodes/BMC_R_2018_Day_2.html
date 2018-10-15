@@ -717,7 +717,14 @@ library(tidyverse)</code></pre>
 <pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
 <pre><code>## filter(): dplyr, stats
 ## lag():    dplyr, stats</code></pre>
-<p>First we’ll step into one of the most popular tidyverse package called <a href="https://dplyr.tidyverse.org/">dplyr</a>.</p>
+</div>
+<div id="haven" class="section level2">
+<h2>haven</h2>
+<p>haven is a package within the tidyverse that allows you to read in data from different sources. For example, if our autism dataset was saved as an .sav file (SPSS), we can use <code>haven</code> to read that in.</p>
+<pre class="r"><code># load haven
+library(haven)
+autism.data.spss &lt;- read_spss(&quot;autism_data.sav&quot;)</code></pre>
+<p>Next, we’ll step into one of the most popular tidyverse package called <a href="https://dplyr.tidyverse.org/">dplyr</a>.</p>
 </div>
 <div id="dpylr" class="section level2">
 <h2>dpylr</h2>
@@ -726,6 +733,7 @@ library(tidyverse)</code></pre>
 <p class="caption">dplyr</p>
 </div>
 <p><code>dpylr</code> allows you to perform some of the most common data manipulation tasks you’ll encounter in R. The background of the <code>dplyr</code> package is that it is a “grammar” of data manipulation and that its functions are a set of verbs.</p>
+<p>You will also notice that the spelling follows British spelling rather than American (Hadley Wickham, author and maintainer of the tidyverse, is from New Zealand), but they can actually be used interchangeably. For example, <code>summarise()</code> and <code>summarize()</code> perform the same function.</p>
 <div id="select" class="section level3">
 <h3>select()</h3>
 <p>The <code>select()</code> function allows you to pick or remove variables based on their names. Note that you do not use <code>&quot;</code> nor <code>'</code> to wrap the column names as you would with a base R function</p>
@@ -764,6 +772,7 @@ head(selected.autism.data)</code></pre>
 ## 5      2 18 and more     &lt;NA&gt;        NO PatientID_5
 ## 6      9 18 and more     Self       YES PatientID_6</code></pre>
 <p>The tidyverse allows you to pipe functions together to create a chain to data manipulations. This allows you to redirect the output of one function into another one. Those familiar with bash or *nix will be familiar with piping with <code>|</code>. Here, we use <code>%&gt;%</code> to pipe.</p>
+<p>This makes each step discrete and helps immensely with readability</p>
 <pre class="r"><code>autism.data %&gt;% select(age, gender, result) %&gt;% head()</code></pre>
 <pre><code>##   age gender result
 ## 1  26      f      6
@@ -789,7 +798,7 @@ head(selected.autism.data)</code></pre>
 </div>
 <div id="filter" class="section level3">
 <h3>filter()</h3>
-<p>The <code>filter()</code> function allows you to filter rows of your dataset that match some condition</p>
+<p>The <code>filter()</code> function allows you to filter rows of your dataset that match some condition. We can also combine this with some of R’ base functions. Here, we’ll use <code>head()</code> to restrict the output number of rows</p>
 <pre class="r"><code>autism.data %&gt;% 
   filter(age == 17) %&gt;% 
   head()</code></pre>
@@ -834,7 +843,7 @@ head(selected.autism.data)</code></pre>
 ## 4  17      m       Austria
 ## 5  17      f     Argentina
 ## 6  17      f   New Zealand</code></pre>
-<p>You can combine this with some of R’s base functions (as we did with the <code>head()</code> function). What are the counts for countries of the 17 year olds in the autism dataset</p>
+<p>What are the counts for countries of the 17 year olds in the autism dataset</p>
 <pre class="r"><code>autism.data %&gt;% 
   filter(age == 17) %&gt;% 
   select(country) %&gt;%
@@ -886,6 +895,41 @@ head(selected.autism.data)</code></pre>
 ##                    1                    4                    0 
 ##             Viet Nam 
 ##                    0</code></pre>
+</div>
+<div id="arrange" class="section level3">
+<h3>arrange()</h3>
+<p>The <code>arrange()</code> function allows you to reorder the rows of your dataset</p>
+<pre class="r"><code>autism.data %&gt;% 
+  arrange(age) %&gt;% 
+  head()</code></pre>
+<pre><code>##   id A1_Score A2_Score A3_Score A4_Score A5_Score A6_Score A7_Score
+## 1  7        0        1        0        0        0        0        0
+## 2 10        1        1        1        1        0        1        1
+## 3 13        0        1        1        1        1        1        0
+## 4 14        1        0        0        0        0        0        1
+## 5 15        1        0        0        0        0        0        1
+## 6 85        1        1        0        0        0        0        0
+##   A8_Score A9_Score A10_Score age gender      ethnicity jaundice autism
+## 1        1        0         0  17      f          Black       no     no
+## 2        1        1         0  17      m          Asian      yes    yes
+## 3        0        1         0  17      f           &lt;NA&gt;       no     no
+## 4        1        0         1  17      m           &lt;NA&gt;       no     no
+## 5        1        0         1  17      f           &lt;NA&gt;       no     no
+## 6        0        0         0  17      f White-European       no     no
+##         country used_app_before result    age_desc
+## 1 United States              no      2 18 and more
+## 2       Bahamas              no      8 18 and more
+## 3       Bahamas              no      6 18 and more
+## 4       Austria              no      4 18 and more
+## 5     Argentina              no      4 18 and more
+## 6   New Zealand              no      2 18 and more
+##                   relation Class.ASD         pids
+## 1                     Self        NO  PatientID_7
+## 2 Health care professional       YES PatientID_10
+## 3                     &lt;NA&gt;        NO PatientID_13
+## 4                     &lt;NA&gt;        NO PatientID_14
+## 5                     &lt;NA&gt;        NO PatientID_15
+## 6                     Self        NO PatientID_85</code></pre>
 </div>
 <div id="mutate" class="section level3">
 <h3>mutate()</h3>
@@ -967,6 +1011,49 @@ head(selected.autism.data)</code></pre>
 ## 5   595.5
 ## 6   545.0</code></pre>
 </div>
+<div id="summarise-and-group_by" class="section level3">
+<h3>summarise() and group_by()</h3>
+<p>The <code>summarise()</code> function reduces down multiple values into one summary statistic. To do so, we need to tell R which groups we’re interested in summarising our data into. To do so, we need to use the <code>group_by()</code> function prior to calling <code>summarise()</code></p>
+<pre class="r"><code>autism.data %&gt;%
+  group_by(Class.ASD) %&gt;%
+  summarise(meanage = mean(age, na.rm = TRUE),
+            count = n())</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   Class.ASD meanage count
+##   &lt;fct&gt;       &lt;dbl&gt; &lt;int&gt;
+## 1 NO           28.4   514
+## 2 YES          31.3   189</code></pre>
+<p>You can group by more than one variable</p>
+<pre class="r"><code>autism.data %&gt;%
+  group_by(Class.ASD, gender) %&gt;%
+  summarise(mean.age = mean(age, na.rm = TRUE),
+            max.age = max(age, na.rm = TRUE),
+            min.age = min(age, na.rm = TRUE),
+            count = n())</code></pre>
+<pre><code>## # A tibble: 4 x 6
+## # Groups:   Class.ASD [?]
+##   Class.ASD gender mean.age max.age min.age count
+##   &lt;fct&gt;     &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
+## 1 NO        f          28.7      61      17   233
+## 2 NO        m          28.1      64      17   281
+## 3 YES       f          31.3      60      17   103
+## 4 YES       m          31.3      61      17    86</code></pre>
+</div>
+</div>
+<div id="quiz-2" class="section level2">
+<h2>Quiz</h2>
+<ol style="list-style-type: decimal">
+<li>Create a summary table for mean <code>result</code> for a grouping by gender, autism class and family history of autism</li>
+</ol>
+<pre class="r"><code>autism.data %&gt;%
+  
+  # your code here</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>(Intermediate) Do the same as above and now arrange from the lowest mean <code>result</code> to the highest</li>
+</ol>
+<pre class="r"><code>autism.data %&gt;%
+  
+  # your code here</code></pre>
 </div>
 
 
