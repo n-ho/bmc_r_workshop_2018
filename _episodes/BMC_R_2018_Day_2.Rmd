@@ -327,6 +327,7 @@ mean(autism.data$age, na.rm = TRUE)
 
 ## Data wrangling
 
+![](tidyverse_website.png)
 
 So far, we've been using R's base functions to perform our data wrangling and manipulation. I would highly encourage you to learn to use the [tidyverse](https://www.tidyverse.org/) collection of data wrangling and visualisation tools. These are excellent tools that allows you to write elegent, legible code that gets your data into the right shape prior to analysis.
 
@@ -337,6 +338,9 @@ library(tidyverse)
 
 
 ## haven
+
+![](haven_logo.png)
+
 haven is a package within the tidyverse that allows you to read in data from different sources. For example, if our autism dataset was saved as an .sav file (SPSS), we can use `haven` to read that in.
 
 ```{r, warning=FALSE}
@@ -350,7 +354,7 @@ Next, we'll step into one of the most popular tidyverse package called [dplyr](h
 
 ## dpylr
 
-![dplyr](hex-dplyr.jpg)
+![](hex-dplyr.jpeg)
 
 `dpylr` allows you to perform some of the most common data manipulation tasks you'll encounter in R. The background of the `dplyr` package is that it is a "grammar" of data manipulation and that its functions are a set of verbs.
 
