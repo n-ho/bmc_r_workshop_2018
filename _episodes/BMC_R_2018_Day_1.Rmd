@@ -64,19 +64,12 @@ Note that in "Files", you have a new Rproj file.
 
 ### Install prerequisites
 
-Below is a script that installs packages that you will need for the next three days and also sets some options which will make the course run smoothly. We will explain what the script does as we get further into the material, but for the meantime we would ask that you copy the script and run it in your environment.
+Below is a set of commands to install and load packages that you will need for the next three days and also sets some options which will make the course run smoothly. Please copy and run the below commands in your R console.
 
 ```{r installation, eval=FALSE, message=FALSE}
-LoadPackages <- function(x){ for( i in x ){ if( ! require( i , character.only = TRUE ) ){
-  install.packages( i , dependencies = TRUE , repos = "http://cran.us.r-project.org")
-  require( i , character.only = TRUE )}}}
-
-#  Then try/install packages...
-LoadPackages(c("tidyverse",
-               "xlsx",
-               "ggplot2",
-               "foreign",
-               "dplyr"))
+#  Install the tidyverse and then load it
+install.packages("tidyverse", dependencies = TRUE, repos = "https://cran.csiro.au")
+library(tidyverse)
 
 options(scipen = 999)
 set.seed(2018)
